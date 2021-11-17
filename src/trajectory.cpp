@@ -4,15 +4,10 @@
 #include <iostream>
 using namespace std;
 
-Trajectory::Trajectory(const size_t &nb_points) {
-  numberOfPoints = nb_points;
-  for (size_t i = 0; i < numberOfPoints; i++)
-    listOfPoints.push_back(Point3D());
-}
-
-Trajectory::Trajectory(vector<Point3D> &points, int &number) {
-  listOfPoints = points;
-  numberOfPoints = number;
+Trajectory::Trajectory(Point3D pos, Point3D destination) {
+  listOfPoints.push_back(pos);
+  listOfPoints.push_back(destination);
+  numberOfPoints = listOfPoints.size();
 }
 
 ostream &operator<<(ostream &os, const Trajectory &T) {

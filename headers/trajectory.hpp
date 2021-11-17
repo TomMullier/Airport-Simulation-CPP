@@ -10,8 +10,7 @@ private:
   size_t numberOfPoints;
 
 public:
-  Trajectory(const size_t &nb_points);
-  Trajectory(vector<Point3D> &points, int &number);
+  Trajectory(Point3D pos=Point3D(), Point3D destination=Point3D());
   vector<Point3D> getList() const { return this->listOfPoints; };
   friend ostream &operator<<(ostream &os, const Trajectory &T);
   Point3D &getPoint(const int &n);
