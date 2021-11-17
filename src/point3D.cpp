@@ -1,7 +1,7 @@
 #include "../headers/point3D.hpp"
 #include <cmath>
 #include <cstdlib>
-#include <iostream>
+
 using namespace std;
 
 Point3D::Point3D() {
@@ -11,7 +11,8 @@ Point3D::Point3D() {
 };
 Point3D::Point3D(const float &newx, const float &newy, const float &newz) {
   x = newx;
-  y = newy, z = newz;
+  y = newy;
+  z = newz;
 };
 
 void Point3D::setXYZ(const float &newx, const float &newy, const float &newz) {
@@ -29,11 +30,14 @@ float Point3D::getY() { return y; };
 
 float Point3D::getZ() { return z; };
 
-void Point3D::print() {
-  cout << "x = " << x << " , y = " << y << " , z = " << z << endl;
-};
 float Point3D::distanceTo(Point3D &otherPoint3D) {
   return sqrt(pow(otherPoint3D.getX() - x, 2) +
               pow(otherPoint3D.getY() - y, 2) +
               pow(otherPoint3D.getZ() - z, 2));
 };
+
+ostream &operator<<(ostream &os, const Point3D &position) {
+  os << "(" << position.x << ", " << position.y << ", " << position.z << ")"
+     << endl;
+  return os;
+}

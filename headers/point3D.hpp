@@ -1,3 +1,7 @@
+#include <iostream>
+
+using namespace std;
+
 class Point3D {
 private:
   float x, y, z;
@@ -12,6 +16,6 @@ public:
   float getX();
   float getY();
   float getZ();
-  void print();
   float distanceTo(Point3D &otherPoint3D);
+  friend ostream &operator<<(ostream &os, const Point3D &position);
 };
