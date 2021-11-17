@@ -1,6 +1,6 @@
-cmake_minimum_required(VERSION 3.20.5)
-project(project_cir)
-
+cmake_minimum_required(VERSION 3.0)
+project(project)
+add_compile_options(-Wall)
 include_directories(headers)
 
 file(GLOB SOURCES "src/*.cpp")
