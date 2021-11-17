@@ -1,7 +1,7 @@
 #include "../headers/trajectory.hpp"
-#include <cmath>
 #include <cstdlib>
 #include <iostream>
+
 using namespace std;
 
 Trajectory::Trajectory(Point3D pos, Point3D destination) {
@@ -14,9 +14,9 @@ ostream &operator<<(ostream &os, const Trajectory &T) {
   vector<Point3D> table = T.listOfPoints;
   vector<Point3D>::iterator it = table.begin();
   while (it != table.end()) {
-    os << *it;
+    os << *it++;
   }
-  os << T.numberOfPoints;
+  os << T.numberOfPoints << " points" << endl;
   return os;
 }
 

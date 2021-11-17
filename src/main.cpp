@@ -10,10 +10,17 @@
 using namespace std;
 
 int main(int argc, char *argv[]) {
-  Point3D a(0, 0, 0);
+  //Point3D a(0, 0, 0);
   Point3D b(10, 10, 0);
-  Trajectory T(a,b);
-  cout << a.distanceTo(b) << endl;
+  //Trajectory T(a,b);
+  //cout << a.distanceTo(b) << endl;
 
+  Plane p(b);
+  //cout << p.getPos();
+  //cout << p.getTraj();
+  while (p.getPos().getX()<b.getX()) {
+    p.nextPos();
+    cout << p.getPos();
+  }
   
 }

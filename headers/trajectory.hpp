@@ -11,7 +11,7 @@ private:
 
 public:
   Trajectory(Point3D pos=Point3D(), Point3D destination=Point3D());
-  vector<Point3D> getList() const { return this->listOfPoints; };
+  vector<Point3D> getList() const { return listOfPoints; };
   friend ostream &operator<<(ostream &os, const Trajectory &T);
   Point3D &getPoint(const int &n);
   float getTotalDistance();

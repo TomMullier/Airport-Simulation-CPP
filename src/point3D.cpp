@@ -31,13 +31,10 @@ float Point3D::getY() { return y; };
 float Point3D::getZ() { return z; };
 
 float Point3D::distanceTo(Point3D &otherPoint3D) {
-  return sqrt(pow(otherPoint3D.getX() - x, 2) +
-              pow(otherPoint3D.getY() - y, 2) +
-              pow(otherPoint3D.getZ() - z, 2));
+  return sqrt(pow(otherPoint3D.getX() - x, 2) + pow(otherPoint3D.getY() - y, 2) + pow(otherPoint3D.getZ() - z, 2));
 };
 
 ostream &operator<<(ostream &os, const Point3D &position) {
-  os << "(" << position.x << ", " << position.y << ", " << position.z << ")"
-     << endl;
+  os << "(" << position.x << ", " << position.y << ", " << position.z << ")" << endl;
   return os;
 }
