@@ -1,5 +1,7 @@
 #include "../headers/plane.hpp"
+#include <cmath>
 #include <iterator>
+#include <math.h>
 #include <vector>
 
 using namespace std;
@@ -35,12 +37,13 @@ void Plane::setSpeed(float &newSpeed){
 }
 
 void Plane::nextPos() {
+  float r = speed;
   vector<Point3D> list=traj.getList();
-  vector<Point3D>::iterator first = list.begin();
-  //vector<Point3D>::iterator const last = list.end();
-  Point3D tmp = list[list.size()-1];
-  Point3D C(tmp.getX(), first->getY(), 0);
-  float teta = acos(first->distanceTo(C) / first->distanceTo(tmp));//tan(tmp.distanceTo(C)/first->distanceTo(C));
-  pos = Point3D(pos.getX() + speed * cos(teta), pos.getY() + speed * sin(teta), pos.getZ());
+  vector<Point3D>::iterator const first = list.begin();
+  vector<Point3D>::reverse_iterator const last = list.rbegin();
+  Point3D C(last->getX(), last->getY(), first->getZ());
+  float phi = atan((C.getY()-first->getY())/(C.getX()-first->getX()));
+  float teta = acos((last->getZ()-first->getZ())/first->distanceTo(*last));
+  pos = Point3D(pos.getX() + r * sin(teta) * cos(phi), pos.getY() + r * sin(teta) * sin(phi), pos.getZ() + r * cos(teta));
   //return Point3D(pos.getX() + speed * cos(teta), pos.getY() + speed * sin(teta), pos.getZ());
 }

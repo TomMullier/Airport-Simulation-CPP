@@ -11,7 +11,7 @@ using namespace std;
 
 int main(int argc, char *argv[]) {
   //Point3D a(0, 0, 0);
-  Point3D b(10, 10, 0);
+  Point3D b(10, 10, 10);
   //Trajectory T(a,b);
   //cout << a.distanceTo(b) << endl;
 
