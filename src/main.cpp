@@ -3,26 +3,23 @@
 #include <set>
 #include <vector>
 
-#include "../headers/CCR.hpp"
-
-// #define INTERVALLE 1
+#include "../headers/plane.hpp"
 
 using namespace std;
 
 int main(int argc, char *argv[]) {
-  CCR France;
-  cout << France;
+  //CCR France;
+  //cout << France;
 
-  // Plane p(Merville.getParking());
-  // Point3D a(0, 0, 0);
-  // Point3D b(10, 10, 10);
+  Point3D a(0, 0, 0);
+  Point3D b(2, 5, 10);
+  Plane p(a,b);
   // Trajectory T(a,b);
   // cout << a.distanceTo(b) << endl;
 
-  // Plane p(b);
   // cout << p.getPos();
   // cout << p.getTraj();
-  //  while (p.nextPos()<b) {
-  //    cout << p.getPos();
-  //  }
+  while (p.nextPos()<b) {
+    cout << p.getPos();
+  }
 }
