@@ -6,8 +6,8 @@
 
 using namespace std;
 
-Plane::Plane(Point3D &destination) {
-  pos = Point3D(0, 0, 0);
+Plane::Plane(Point3D &pos,Point3D &destination) {
+  this->pos = pos;
   traj = Trajectory(pos, destination);
   speed = 1;
 }

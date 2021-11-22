@@ -1,4 +1,4 @@
-#include "./trajectory.hpp"
+#include "./CCR.hpp"
 #include <cmath>
 
 class Plane {
@@ -8,7 +8,7 @@ private:
   float speed;
 
 public:
-  Plane(Point3D &destination);
+  Plane(Point3D &pos,Point3D &destination);
   Point3D getPos();
   Trajectory getTraj();
   float getSpeed();
@@ -16,4 +16,6 @@ public:
   void setTraj(Trajectory &newTraj);
   void setSpeed(float & newSpeed);
   Point3D nextPos();
+
+  // void Land();
 };
