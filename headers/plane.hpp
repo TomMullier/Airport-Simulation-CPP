@@ -15,5 +15,5 @@ public:
   void setPos(Point3D &newPos);
   void setTraj(Trajectory &newTraj);
   void setSpeed(float & newSpeed);
-  void nextPos();
+  Point3D nextPos();
 };

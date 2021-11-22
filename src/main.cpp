@@ -18,9 +18,7 @@ int main(int argc, char *argv[]) {
   Plane p(b);
   //cout << p.getPos();
   //cout << p.getTraj();
-  while (p.getPos().getX()<b.getX()) {
-    p.nextPos();
+  while (p.nextPos()<b) {
     cout << p.getPos();
   }
-  
 }

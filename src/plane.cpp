@@ -36,7 +36,7 @@ void Plane::setSpeed(float &newSpeed){
   speed = newSpeed;
 }
 
-void Plane::nextPos() {
+Point3D Plane::nextPos() {
   float r = speed;
   vector<Point3D> list=traj.getList();
   vector<Point3D>::iterator const first = list.begin();
@@ -45,5 +45,5 @@ void Plane::nextPos() {
   float phi = atan((C.getY()-first->getY())/(C.getX()-first->getX()));
   float teta = acos((last->getZ()-first->getZ())/first->distanceTo(*last));
   pos = Point3D(pos.getX() + r * sin(teta) * cos(phi), pos.getY() + r * sin(teta) * sin(phi), pos.getZ() + r * cos(teta));
-  //return Point3D(pos.getX() + speed * cos(teta), pos.getY() + speed * sin(teta), pos.getZ());
+  return Point3D(pos.getX() + speed * cos(teta), pos.getY() + speed * sin(teta), pos.getZ());
 }
