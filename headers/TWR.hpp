@@ -11,7 +11,7 @@ private:
   // vector<Point3D> ListOfTWR;
 
 public:
-  TWR(string _name, Point3D park, Point3D pi, Point3D dep, Point3D arr);
+  TWR(string _name ="", Point3D park =Point3D(), Point3D pi =Point3D(), Point3D dep =Point3D(), Point3D arr =Point3D());
   string getName() const { return name; };
   Point3D getParking() const { return parking; };
   Point3D getPist() const { return pist; };

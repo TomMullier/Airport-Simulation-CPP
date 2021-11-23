@@ -8,18 +8,28 @@
 using namespace std;
 
 int main(int argc, char *argv[]) {
-  //CCR France;
-  //cout << France;
+  srand(time(NULL));
 
-  Point3D a(0, 0, 0);
-  Point3D b(2, 5, 10);
-  Plane p(a,b);
+  CCR France;
+  //cout << France;
+  vector<TWR> t=France.getList();
+  vector<TWR>::iterator it = t.begin();
+  Point3D Park = it->getParking();
+  Plane p(Park,*it);
+
+  cout << p << endl;
+
+  //Point3D a(0, 0, 0);
+  //Point3D b(2, 5, 10);
+
+  
+  //Plane p(a,b);
   // Trajectory T(a,b);
   // cout << a.distanceTo(b) << endl;
 
   // cout << p.getPos();
   // cout << p.getTraj();
-  while (p.nextPos()<b) {
-    cout << p.getPos();
-  }
+  //while (p.nextPos()<b) {
+    //cout << p.getPos();
+  //}
 }

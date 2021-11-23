@@ -6,22 +6,18 @@
 
 using namespace std;
 
-Plane::Plane(Point3D &pos,Point3D &destination) {
+int aleat (int val1, int val2){
+    if (val1>val2) swap(val1, val2);
+    return ( rand() % ( ( val2 - val1 ) + 1) ) + val1;
+}
+
+Plane::Plane(Point3D pos,TWR &destination) {
+  name = "F-";
+  for (size_t i=0; i<4; i++) name += aleat(90, 65);
   this->pos = pos;
-  traj = Trajectory(pos, destination);
+  this->destination = destination;
+  traj = Trajectory(pos, destination.getArrival());
   speed = 1;
-}
-
-Point3D Plane::getPos(){
-  return pos;
-}
-
-Trajectory Plane::getTraj(){
-  return traj;
-}
-
-float Plane::getSpeed(){
-  return speed;
 }
 
 void Plane::setPos(Point3D &newPos){
@@ -55,5 +51,22 @@ Point3D Plane::nextPos() {
     pos = Point3D(this->getPos().getX(), this->getPos().getY(), pos.getZ() + r * cos(teta));
   }
   //pos = Point3D(pos.getX() + r * sin(teta) * cos(phi), pos.getY() + r * sin(teta) * sin(phi), pos.getZ() + r * cos(teta));
-  return Point3D(pos.getX() + speed * cos(teta), pos.getY() + speed * sin(teta), pos.getZ());
+  return getPos();
+}
+
+void land(){
+
+}
+
+void takeOf();
+void parkIn();
+void parkOut();
+
+ostream &operator<<(ostream &os, const Plane &p){
+  os << "Name : " << p.getName() << endl << endl;
+  os << "Position : " << p.getPos() << endl;
+  os << "Destination : " << endl << p.getDestination() << endl;
+  os << "Trajectory : " << endl << p.getTraj() << endl;
+  os << "Speed : "  << p.getSpeed() << endl;
+  return os;
 }
