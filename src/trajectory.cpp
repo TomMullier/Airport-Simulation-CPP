@@ -4,10 +4,14 @@
 
 using namespace std;
 
-Trajectory::Trajectory(Point3D pos, Point3D destination) {
+Trajectory::Trajectory(Point3D pos) {
   listOfPoints.push_back(pos);
-  listOfPoints.push_back(destination);
   numberOfPoints = listOfPoints.size();
+}
+
+void Trajectory::setList(Point3D &p) {
+  listOfPoints.push_back(p);
+  numberOfPoints++;
 }
 
 ostream &operator<<(ostream &os, const Trajectory &T) {
