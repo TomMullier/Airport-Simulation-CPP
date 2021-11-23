@@ -22,8 +22,10 @@ public:
   void setPos(Point3D &newPos);
   void setTraj(vector<Point3D> &newTraj);
   void setSpeed(float &newSpeed);
-  Point3D nextPos();
+  Point3D nextPos(int &count);
   void setParameters(TWR const &t);
+
+  void navigate();
 
   // void land();
   // void takeOf();

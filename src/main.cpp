@@ -18,6 +18,7 @@ int main(int argc, char *argv[]) {
   Plane p(*it1);
   p.setParameters(*it2);
   cout << p << endl;
+  p.navigate();
 
   // Point3D a(0, 0, 0);
   // Point3D b(2, 5, 10);

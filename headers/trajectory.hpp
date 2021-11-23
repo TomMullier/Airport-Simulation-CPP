@@ -14,7 +14,8 @@ public:
   void setNumberOfPoints(){numberOfPoints = listOfPoints.size();};
   void setList(Point3D &p);
   vector<Point3D> getList() const { return listOfPoints; };
-  friend ostream &operator<<(ostream &os, const Trajectory &T);
   Point3D &getPoint(const int &n);
+  int getNumberPoints() const {return numberOfPoints;};
   float getTotalDistance();
+  friend ostream &operator<<(ostream &os, const Trajectory &T);
 };

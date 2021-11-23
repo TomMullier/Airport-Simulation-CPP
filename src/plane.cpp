@@ -25,39 +25,40 @@ Plane::Plane(TWR &twrDep) {
 
 void Plane::setPos(Point3D &newPos) { pos = newPos; }
 
-void Plane::setTraj(vector<Point3D> &newTraj){
+void Plane::setTraj(vector<Point3D> &newTraj) {
   vector<Point3D>::iterator it = newTraj.begin();
-  while (it!=newTraj.end()) {
+  while (it != newTraj.end()) {
     this->traj.setList(*it++);
   }
 }
 
 void Plane::setSpeed(float &newSpeed) { speed = newSpeed; }
 
-Point3D Plane::nextPos() {
+Point3D Plane::nextPos(int &count) {
   float r = speed;
+  Point3D tmp(this->getPos().getX(), this->getPos().getY(),
+              this->getPos().getZ());
+  cout << tmp << endl;
   vector<Point3D> list = traj.getList();
-  vector<Point3D>::iterator const first = list.begin();
-  vector<Point3D>::reverse_iterator const last = list.rbegin();
-  Point3D C(last->getX(), last->getY(), first->getZ());
-  float phi = atan((C.getY() - first->getY()) / (C.getX() - first->getX()));
-  float teta = acos((last->getZ() - first->getZ()) / first->distanceTo(*last));
+  Point3D first = list[count];
+  Point3D last = list[count + 1];
+  Point3D C(last.getX(), last.getY(), first.getZ());
+  float phi = atan((C.getY() - first.getY()) / (C.getX() - first.getX()));
+  float teta = acos((last.getZ() - first.getZ()) / first.distanceTo(last));
 
-  if (abs(first->getX()) < abs(last->getX())) {
-    pos = Point3D(pos.getX() + r * sin(teta) * cos(phi), this->getPos().getY(),
-                  this->getPos().getZ());
+  if (abs(first.getX()) < abs(last.getX())) {
+    tmp.setX(tmp.getX() + r * sin(teta) * cos(phi));
   }
-  if (abs(first->getY()) < abs(last->getY())) {
-    pos = Point3D(this->getPos().getX(), pos.getY() + r * sin(teta) * sin(phi),
-                  this->getPos().getZ());
+  if (abs(first.getY()) < abs(last.getY())) {
+    tmp.setY(tmp.getY() + r * sin(teta) * sin(phi));
   }
-  if (abs(first->getZ()) < abs(last->getZ())) {
-    pos = Point3D(this->getPos().getX(), this->getPos().getY(),
-                  pos.getZ() + r * cos(teta));
+  if (abs(first.getZ()) < abs(last.getZ())) {
+    tmp.setZ(tmp.getZ() + r * cos(teta));
   }
-  // pos = Point3D(pos.getX() + r * sin(teta) * cos(phi), pos.getY() + r *
-  // sin(teta) * sin(phi), pos.getZ() + r * cos(teta));
-  return getPos();
+  // pos = Point3D(pos.getX() + r * sin(teta) * cos(phi),
+  //               pos.getY() + r * sin(teta) * sin(phi),
+  //               pos.getZ() + r * cos(teta));
+  return tmp;
 }
 
 void Plane::setParameters(TWR const &t) {
@@ -76,6 +77,26 @@ void Plane::setParameters(TWR const &t) {
 // void takeOf();
 // void parkIn();
 // void parkOut();
+
+void Plane::navigate() {
+  int count = 0;
+  vector<Point3D> t = this->getTraj().getList();
+  while (count < 2) { // this->traj.getNumberPoints()) {
+    float dist1 = this->pos.distanceTo(t[count + 1]);
+    Point3D nxt = this->nextPos(count);
+    float dist2 = this->pos.distanceTo(nxt);
+    cout << "Distance 1 : " << dist1 << endl
+         << "Distance 2 : " << dist2 << endl;
+    while (dist1 >= dist2) {
+      pos = nxt;
+      cout << "Position : " << pos << endl;
+      dist1 = this->pos.distanceTo(t[count + 1]);
+      nxt = this->nextPos(count);
+      dist2 = this->pos.distanceTo(nxt);
+    }
+    count++;
+  }
+}
 
 ostream &operator<<(ostream &os, const Plane &p) {
   os << "Name : " << p.getName() << endl << endl;
