@@ -9,14 +9,13 @@ using namespace std;
 
 int main(int argc, char *argv[]) {
   srand(time(NULL));
-
   CCR France;
   // cout << France;
   vector<TWR> t = France.getList();
   vector<TWR>::iterator it1 = t.begin();
   vector<TWR>::reverse_iterator it2 = t.rbegin();
-  Plane p(*it1);
-  p.setParameters(*it2);
+  Plane p(*it2);
+  p.setParameters(*it1);
   cout << p << endl;
   p.navigate();
 

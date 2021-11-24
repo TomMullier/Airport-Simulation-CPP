@@ -38,26 +38,28 @@ Point3D Plane::nextPos(int &count) {
   float r = speed;
   Point3D tmp(this->getPos().getX(), this->getPos().getY(),
               this->getPos().getZ());
-  cout << tmp << endl;
   vector<Point3D> list = traj.getList();
   Point3D first = list[count];
   Point3D last = list[count + 1];
   Point3D C(last.getX(), last.getY(), first.getZ());
   float phi = atan((C.getY() - first.getY()) / (C.getX() - first.getX()));
   float teta = acos((last.getZ() - first.getZ()) / first.distanceTo(last));
-
-  if (abs(first.getX()) < abs(last.getX())) {
+  if (tmp.getX() < last.getX()) {
     tmp.setX(tmp.getX() + r * sin(teta) * cos(phi));
   }
-  if (abs(first.getY()) < abs(last.getY())) {
+  else if (tmp.getX() > last.getX()) {
+    tmp.setX(tmp.getX() - r * sin(teta) * cos(phi));
+  }
+  if (tmp.getY() < last.getY() || tmp.getY() > last.getY()) {
     tmp.setY(tmp.getY() + r * sin(teta) * sin(phi));
   }
-  if (abs(first.getZ()) < abs(last.getZ())) {
+  if (tmp.getZ() < last.getZ() || tmp.getZ() > last.getZ()) {
     tmp.setZ(tmp.getZ() + r * cos(teta));
   }
   // pos = Point3D(pos.getX() + r * sin(teta) * cos(phi),
   //               pos.getY() + r * sin(teta) * sin(phi),
   //               pos.getZ() + r * cos(teta));
+
   return tmp;
 }
 
@@ -81,19 +83,26 @@ void Plane::setParameters(TWR const &t) {
 void Plane::navigate() {
   int count = 0;
   vector<Point3D> t = this->getTraj().getList();
-  while (count < 2) { // this->traj.getNumberPoints()) {
+  while (count < 5) {
     float dist1 = this->pos.distanceTo(t[count + 1]);
     Point3D nxt = this->nextPos(count);
     float dist2 = this->pos.distanceTo(nxt);
     cout << "Distance 1 : " << dist1 << endl
-         << "Distance 2 : " << dist2 << endl;
-    while (dist1 >= dist2) {
+         << "Distance 2 : " << dist2 << endl
+         << "NXT : " << nxt << endl;
+    ;
+    while (dist1 > dist2) {
       pos = nxt;
       cout << "Position : " << pos << endl;
       dist1 = this->pos.distanceTo(t[count + 1]);
       nxt = this->nextPos(count);
       dist2 = this->pos.distanceTo(nxt);
+      cout << "Distance 1 : " << dist1 << endl
+           << "Distance 2 : " << dist2 << endl
+           << "NXT : " << nxt << endl;
     }
+    this->pos = t[count + 1];
+    cout << pos << endl << endl;
     count++;
   }
 }
