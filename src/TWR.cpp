@@ -15,6 +15,10 @@ TWR::TWR(string _name, Point3D park, Point3D pi, Point3D dep, Point3D arr) {
   departure = dep;
 }
 
+bool TWR::operator==(const TWR &twr){
+  return this->getName()==twr.getName();
+}
+
 ostream &operator<<(ostream &os, const TWR &T) {
   os << "Name : " << T.getName() << endl
      << "Parking : " << T.getParking() << "Piste : " << T.getPist()

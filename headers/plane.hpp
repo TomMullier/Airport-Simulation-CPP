@@ -2,6 +2,7 @@
 #include <cmath>
 #include <vector>
 
+
 class Plane {
 private:
   string name;
@@ -12,7 +13,7 @@ private:
   float speed;
 
 public:
-  Plane(TWR &twrDep);
+  Plane(CCR &ccr);
   string getName() const { return name; };
   Point3D getPos() const { return pos; };
   TWR getDep() const { return twrDep; };
@@ -23,7 +24,7 @@ public:
   void setTraj(vector<Point3D> &newTraj);
   void setSpeed(float &newSpeed);
   Point3D nextPos(int &count);
-  void setParameters(TWR const &t);
+  void setParameters(CCR &ccr);
 
   void navigate();
 

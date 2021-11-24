@@ -6,19 +6,13 @@
 
 using namespace std;
 
-int aleat(int val1, int val2) {
-  if (val1 > val2)
-    swap(val1, val2);
-  return (rand() % ((val2 - val1) + 1)) + val1;
-}
-
-Plane::Plane(TWR &twrDep) {
+Plane::Plane(CCR &ccr) {
   name = "F-";
   for (size_t i = 0; i < 4; i++)
     name += aleat(90, 65);
+  this->twrDep = ccr.getDep();
   this->pos = twrDep.getParking();
-  this->twrDep = twrDep;
-  this->twrDestination = twrDep;
+  this->twrDestination = this->twrDep;
   traj = Trajectory(this->pos);
   speed = 1;
 }
@@ -46,8 +40,7 @@ Point3D Plane::nextPos(int &count) {
   float teta = acos((last.getZ() - first.getZ()) / first.distanceTo(last));
   if (tmp.getX() < last.getX()) {
     tmp.setX(tmp.getX() + r * sin(teta) * cos(phi));
-  }
-  else if (tmp.getX() > last.getX()) {
+  } else if (tmp.getX() > last.getX()) {
     tmp.setX(tmp.getX() - r * sin(teta) * cos(phi));
   }
   if (tmp.getY() < last.getY() || tmp.getY() > last.getY()) {
@@ -63,8 +56,8 @@ Point3D Plane::nextPos(int &count) {
   return tmp;
 }
 
-void Plane::setParameters(TWR const &t) {
-  this->twrDestination = t;
+void Plane::setParameters(CCR &ccr) {
+  this->twrDestination = ccr.getArr(this->twrDep);
   vector<Point3D> tmp;
   tmp.push_back(twrDep.getPist());
   tmp.push_back(twrDep.getDeparture());

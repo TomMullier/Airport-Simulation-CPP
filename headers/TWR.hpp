@@ -17,5 +17,6 @@ public:
   Point3D getPist() const { return pist; };
   Point3D getDeparture() const { return departure; };
   Point3D getArrival() const { return arrival; };
+  bool operator==(const TWR &twr);
   friend ostream &operator<<(ostream &os, const TWR &T);
 };
