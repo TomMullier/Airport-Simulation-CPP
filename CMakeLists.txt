@@ -4,5 +4,7 @@ add_compile_options(-Wall)
 include_directories(headers)
 
 file(GLOB SOURCES "src/*.cpp")
+find_package(nlohmann_json 3.2.0 REQUIRED)
+target_link_libraries(nlohmann_json::nlohmann_json)
 
 add_executable(project ${SOURCES})

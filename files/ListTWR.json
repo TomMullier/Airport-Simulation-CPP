@@ -1,0 +1,65 @@
+{
+  "Paris": {
+    "name":"Paris",
+    "parking": {
+      "x": 0,
+      "y": 0
+    },
+    "pist": {
+      "x": 0,
+      "y": 10
+    },
+    "departure": {
+      "x": -10,
+      "y": 10,
+      "z": 10
+    },
+    "arrival": {
+      "x": 10,
+      "y": 10,
+      "z": 10
+    }
+  },
+  "Merville": {
+    "name":"Merville",
+    "parking": {
+      "x": 20,
+      "y": 100
+    },
+    "pist": {
+      "x": 20,
+      "y": 110
+    },
+    "departure": {
+      "x": 10,
+      "y": 110,
+      "z": 10
+    },
+    "arrival": {
+      "x": 30,
+      "y": 110,
+      "z": 10
+    }
+  },
+  "Marseille": {
+    "name":"Marseille",
+    "parking": {
+      "x": 80,
+      "y": 30
+    },
+    "pist": {
+      "x": 80,
+      "y": 40
+    },
+    "departure": {
+      "x": 70,
+      "y": 40,
+      "z": 10
+    },
+    "arrival": {
+      "x": 90,
+      "y": 40,
+      "z": 10
+    }
+  }
+}

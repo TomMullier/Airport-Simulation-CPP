@@ -8,79 +8,25 @@
 
 #define SEPARATOR ','
 
-CCR::CCR() {
-  fstream file;
-  file.open("../files/ListTWR.txt", ios::in);
-  if (file.is_open()) {
-    float pa1, pa2, pi1, pi2, dep1, dep2, dep3, arr1, arr2, arr3;
-    string line;
-    string _name;
-    while (getline(file, line)) {
-      stringstream stream(line);
-      string str_comp;
-      int counter = 1;
+#include "../headers/json.hpp"
+using nlohmann::json;
 
-      while (getline(stream, str_comp, SEPARATOR)) {
-        switch (counter) {
-        case 1: {
-          _name = str_comp;
-          counter++;
-          break;
-        }
-        case 2: {
-          pa1 = stof(str_comp);
-          counter++;
-          break;
-        }
-        case 3: {
-          pa2 = stof(str_comp);
-          counter++;
-          break;
-        }
-        case 4: {
-          pi1 = stof(str_comp);
-          counter++;
-          break;
-        }
-        case 5: {
-          pi2 = stof(str_comp);
-          counter++;
-          break;
-        }
-        case 6: {
-          dep1 = stof(str_comp);
-          counter++;
-          break;
-        }
-        case 7: {
-          dep2 = stof(str_comp);
-          counter++;
-          break;
-        }
-        case 8: {
-          dep3 = stof(str_comp);
-          counter++;
-          break;
-        }
-        case 9: {
-          arr1 = stof(str_comp);
-          counter++;
-          break;
-        }
-        case 10: {
-          arr2 = stof(str_comp);
-          counter++;
-          break;
-        }
-        case 11: {
-          arr3 = stof(str_comp);
-          counter++;
-          break;
-        }
-        }
-      }
-      TWR t(_name, Point3D(pa1, pa2, 0), Point3D(pi1, pi2, 0),
-            Point3D(dep1, dep2, dep3), Point3D(arr1, arr2, arr3));
+CCR::CCR() {
+  std::ifstream file("../files/ListTWR.json");
+  json j;
+  file >> j;
+
+  if (file.is_open()) {
+    for (auto it = j.begin(); it != j.end(); ++it) {
+      json temp;
+      temp = *it;
+      TWR t(temp["name"],
+            Point3D(temp["parking"]["x"], temp["parking"]["y"], 0),
+            Point3D(temp["pist"]["x"], temp["pist"]["y"], 0),
+            Point3D(temp["departure"]["x"], temp["departure"]["y"],
+                    temp["departure"]["z"]),
+            Point3D(temp["arrival"]["x"], temp["arrival"]["y"],
+                    temp["arrival"]["z"]));
       ListOfTWR.push_back(t);
     }
     file.close();
