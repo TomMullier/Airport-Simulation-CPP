@@ -40,10 +40,15 @@ Point3D Plane::nextPos(int &count) {
   float teta = acos((last.getZ() - first.getZ()) / first.distanceTo(last));
   if (tmp.getX() < last.getX()) {
     tmp.setX(tmp.getX() + r * sin(teta) * cos(phi));
+    if (tmp.getY() < last.getY() || tmp.getY() > last.getY()) {
+      tmp.setY(tmp.getY() + r * sin(teta) * sin(phi));
+    }
   } else if (tmp.getX() > last.getX()) {
     tmp.setX(tmp.getX() - r * sin(teta) * cos(phi));
-  }
-  if (tmp.getY() < last.getY() || tmp.getY() > last.getY()) {
+    if (tmp.getY() < last.getY() || tmp.getY() > last.getY()) {
+      tmp.setY(tmp.getY() - r * sin(teta) * sin(phi));
+    }
+  } else if (tmp.getY() < last.getY() || tmp.getY() > last.getY()) {
     tmp.setY(tmp.getY() + r * sin(teta) * sin(phi));
   }
   if (tmp.getZ() < last.getZ() || tmp.getZ() > last.getZ()) {

@@ -1,4 +1,4 @@
-#include <SFML/Graphics.hpp>
+// #include <SFML/Graphics.hpp>
 #include <cmath>
 #include <fstream>
 #include <iostream>
@@ -9,13 +9,13 @@
 #include "../headers/plane.hpp"
 
 using namespace std;
-using namespace sf;
+// using namespace sf;
 
 int main(int argc, char *argv[]) {
   srand(time(NULL));
   CCR France;
   cout << France;
-  cout << "-------------------" << endl << endl;
+  // cout << "-------------------" << endl << endl;
 
   // RenderWindow window(VideoMode(200, 200), "SFML works!");
   // CircleShape shape(100.f);
@@ -36,5 +36,5 @@ int main(int argc, char *argv[]) {
   Plane p(France);
   p.setParameters(France);
   cout << p << endl;
-  // p.navigate();
+  p.navigate();
 }
