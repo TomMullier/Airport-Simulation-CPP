@@ -34,3 +34,5 @@ public:
   // void parkOut();
   friend ostream &operator<<(ostream &os, const Plane &p);
 };
+
+void threadPlane(CCR &C) ;

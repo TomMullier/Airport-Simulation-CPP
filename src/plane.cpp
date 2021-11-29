@@ -1,8 +1,10 @@
 #include "../headers/plane.hpp"
+#include <chrono>
 #include <cmath>
 #include <cstddef>
 #include <iterator>
 #include <math.h>
+#include <thread>
 #include <vector>
 
 using namespace std;
@@ -81,8 +83,10 @@ void Plane::setParameters(CCR &ccr) {
 
 void Plane::navigate() {
   int count = 0;
+  cout << "Thread ID : " << this_thread::get_id() << endl
+       << "Position : " << pos << endl;
   vector<Point3D> t = this->getTraj().getList();
-  while (count < int(t.size())-1) {
+  while (count < int(t.size()) - 1) {
     float dist1 = this->pos.distanceTo(t[count + 1]);
     Point3D nxt = this->nextPos(count);
     float dist2 = this->pos.distanceTo(nxt);
@@ -91,16 +95,19 @@ void Plane::navigate() {
     //      << "NXT : " << nxt << endl;
     while (dist1 > dist2) {
       pos = nxt;
-      // cout << "Position : " << pos << endl;
+      cout << "Thread ID : " << this_thread::get_id() << endl
+           << "Position : " << pos << endl;
       dist1 = this->pos.distanceTo(t[count + 1]);
       nxt = this->nextPos(count);
       dist2 = this->pos.distanceTo(nxt);
       // cout << "Distance 1 : " << dist1 << endl
       //      << "Distance 2 : " << dist2 << endl
       //      << "NXT : " << nxt << endl;
+      // Time sleep
+      this_thread::sleep_for(1000ms);
     }
     this->pos = t[count + 1];
-    // cout << pos << endl << endl;
+    cout << pos << endl << endl;
     count++;
   }
 }
@@ -113,4 +120,11 @@ ostream &operator<<(ostream &os, const Plane &p) {
   os << "Trajectory : " << endl << p.getTraj() << endl;
   os << "Speed : " << p.getSpeed() << endl;
   return os;
+}
+
+void threadPlane(CCR &C) {
+  Plane *p = new Plane(C);
+  p->setParameters(C);
+  cout << *p << endl;
+  p->navigate();
 }
