@@ -1,5 +1,6 @@
 #include "../headers/plane.hpp"
 #include <cmath>
+#include <cstddef>
 #include <iterator>
 #include <math.h>
 #include <vector>
@@ -81,26 +82,25 @@ void Plane::setParameters(CCR &ccr) {
 void Plane::navigate() {
   int count = 0;
   vector<Point3D> t = this->getTraj().getList();
-  while (count < 5) {
+  while (count < int(t.size())-1) {
     float dist1 = this->pos.distanceTo(t[count + 1]);
     Point3D nxt = this->nextPos(count);
     float dist2 = this->pos.distanceTo(nxt);
-    cout << "Distance 1 : " << dist1 << endl
-         << "Distance 2 : " << dist2 << endl
-         << "NXT : " << nxt << endl;
-    ;
+    // cout << "Distance 1 : " << dist1 << endl
+    //      << "Distance 2 : " << dist2 << endl
+    //      << "NXT : " << nxt << endl;
     while (dist1 > dist2) {
       pos = nxt;
-      cout << "Position : " << pos << endl;
+      // cout << "Position : " << pos << endl;
       dist1 = this->pos.distanceTo(t[count + 1]);
       nxt = this->nextPos(count);
       dist2 = this->pos.distanceTo(nxt);
-      cout << "Distance 1 : " << dist1 << endl
-           << "Distance 2 : " << dist2 << endl
-           << "NXT : " << nxt << endl;
+      // cout << "Distance 1 : " << dist1 << endl
+      //      << "Distance 2 : " << dist2 << endl
+      //      << "NXT : " << nxt << endl;
     }
     this->pos = t[count + 1];
-    cout << pos << endl << endl;
+    // cout << pos << endl << endl;
     count++;
   }
 }

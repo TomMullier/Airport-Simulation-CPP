@@ -5,6 +5,7 @@
 #include <set>
 #include <sstream>
 #include <vector>
+#include <thread>
 
 #include "../headers/plane.hpp"
 

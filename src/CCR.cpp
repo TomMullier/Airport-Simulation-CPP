@@ -44,14 +44,14 @@ int aleat(int val1, int val2) {
 }
 
 TWR CCR::getDep() const {
-  int idx = aleat(0, ListOfTWR.size());
+  int idx = aleat(0, (ListOfTWR.size()-1));
   return ListOfTWR[idx];
 }
 
 TWR CCR::getArr(const TWR &dep) {
   int idx;
   do {
-    idx = aleat(0, ListOfTWR.size());
+    idx = aleat(0, (ListOfTWR.size()-1));
   } while (ListOfTWR[idx] == dep);
   return ListOfTWR[idx];
 }
