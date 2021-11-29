@@ -1,4 +1,4 @@
-#include <SFML/Graphics.hpp>
+#include <SFML/Graphics/CircleShape.hpp>
 #include <cmath>
 #include <fstream>
 #include <iostream>
@@ -17,44 +17,50 @@ using namespace sf;
 
 int main(int argc, char *argv[]) {
   srand(time(NULL));
+  // DISPLAY
+  RenderWindow window(VideoMode(500, 500), "Comme tu veux");
 
   // CCR
-  // CCR France;
-  // cout << France;
+  CCR France;
+  cout << France;
 
   // Plane
-  // Plane p(France);
-  // p.setParameters(France);
-  // cout << p << endl;
-  // p.navigate();
+  vector<Plane> planes;
+  for (int i = 0; i < NBPLANES; i++) {
+    Plane *p = new Plane(France);
+    p->setParameters(France);
+    planes.push_back(*p);
+    cout << *p << endl;
+  }
 
   // Threads
-  // vector<thread> T;
-  // for (int i = 0; i < NBPLANES; i++) {
-  //   thread *th = new thread(threadPlane, ref(France));
-  //   T.push_back(move(*th));
-  // }
-  // vector<thread>::iterator itT = T.begin();
-  // while (itT!=T.end()) {
-  //   (*itT++).join();
-  // }
+  vector<thread> T;
+  for (int i = 0; i < NBPLANES; i++) {
+    thread *th = new thread(threadPlane, ref(planes[i]));
+    T.push_back(move(*th));
+  }
 
   // Display
-  // cout << "-------------------" << endl << endl;
-
-  RenderWindow window(VideoMode(200, 200), "SFML works!");
-  CircleShape shape(100.f);
-  shape.setFillColor(Color::Green);
-
+  vector<Plane>::iterator itPlane = planes.begin();
+  cout << "-------------------" << endl << endl;
   while (window.isOpen()) {
     Event event;
     while (window.pollEvent(event)) {
       if (event.type == Event::Closed)
         window.close();
     }
-
     window.clear();
-    window.draw(shape);
+    while (itPlane != planes.end()) {
+      (*itPlane).getShape().setPosition(itPlane->getPos().getX(), itPlane->getPos().getY());
+      window.draw((*itPlane++).getShape());
+    }
     window.display();
+  }
+
+  vector<thread>::iterator itT = T.begin();
+  while (itT != T.end()) {
+    if (itT->joinable()) {
+      (*itT++).join();
+    }
   }
 }

@@ -8,6 +8,7 @@
 #include <vector>
 
 using namespace std;
+using namespace sf;
 
 Plane::Plane(CCR &ccr) {
   name = "F-";
@@ -18,6 +19,12 @@ Plane::Plane(CCR &ccr) {
   this->twrDestination = this->twrDep;
   traj = Trajectory(this->pos);
   speed = 1;
+  // DISPLAY 
+  CircleShape _shape(100.f);
+  _shape.setFillColor(Color::Green);
+  _shape.setPosition(pos.getX(), pos.getY());
+  this->shape=_shape;
+
 }
 
 void Plane::setPos(Point3D &newPos) { pos = newPos; }
@@ -82,6 +89,7 @@ void Plane::setParameters(CCR &ccr) {
 // void parkOut();
 
 void Plane::navigate() {
+  // PLANE
   int count = 0;
   cout << "Thread ID : " << this_thread::get_id() << endl
        << "Position : " << pos << endl;
@@ -122,9 +130,6 @@ ostream &operator<<(ostream &os, const Plane &p) {
   return os;
 }
 
-void threadPlane(CCR &C) {
-  Plane *p = new Plane(C);
-  p->setParameters(C);
-  cout << *p << endl;
-  p->navigate();
+void threadPlane(Plane &p) {
+  p.navigate();
 }

@@ -1,7 +1,9 @@
 #include "./CCR.hpp"
+#include <SFML/Graphics.hpp>
 #include <cmath>
 #include <vector>
 
+using namespace sf;
 
 class Plane {
 private:
@@ -11,6 +13,7 @@ private:
   TWR twrDestination;
   Trajectory traj;
   float speed;
+  CircleShape shape;
 
 public:
   Plane(CCR &ccr);
@@ -25,7 +28,7 @@ public:
   void setSpeed(float &newSpeed);
   Point3D nextPos(int &count);
   void setParameters(CCR &ccr);
-
+  CircleShape getShape() const { return shape;};
   void navigate();
 
   // void land();
@@ -35,4 +38,4 @@ public:
   friend ostream &operator<<(ostream &os, const Plane &p);
 };
 
-void threadPlane(CCR &C) ;
+void threadPlane(Plane &p);
