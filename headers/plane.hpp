@@ -28,7 +28,7 @@ public:
   void setSpeed(float &newSpeed);
   Point3D nextPos(int &count);
   void setParameters(CCR &ccr);
-  CircleShape getShape() const { return shape;};
+  CircleShape* getShape() { return &shape;};
   void navigate();
 
   // void land();
