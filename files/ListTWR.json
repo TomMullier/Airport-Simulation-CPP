@@ -1,6 +1,6 @@
 {
   "Lille": {
-    "name":"LFQQ",
+    "name": "LFQQ",
     "parking": {
       "x": 808,
       "y": 359
@@ -18,10 +18,11 @@
       "x": 818,
       "y": 369,
       "z": 20
-    }
+    },
+    "limit": 1
   },
   "Merville": {
-    "name":"LFQT",
+    "name": "LFQT",
     "parking": {
       "x": 624,
       "y": 341
@@ -39,10 +40,11 @@
       "x": 634,
       "y": 351,
       "z": 20
-    }
+    },
+    "limit": 1
   },
   "Le Touquet": {
-    "name":"LFAT",
+    "name": "LFAT",
     "parking": {
       "x": 150,
       "y": 438
@@ -60,10 +62,11 @@
       "x": 160,
       "y": 448,
       "z": 20
-    }
+    },
+    "limit": 1
   },
   "Calais": {
-    "name":"LFAC",
+    "name": "LFAC",
     "parking": {
       "x": 272,
       "y": 130
@@ -81,10 +84,11 @@
       "x": 282,
       "y": 140,
       "z": 20
-    }
+    },
+    "limit": 1
   },
   "Maubeuge": {
-    "name":"LFQJ",
+    "name": "LFQJ",
     "parking": {
       "x": 1223,
       "y": 590
@@ -102,10 +106,11 @@
       "x": 1233,
       "y": 600,
       "z": 20
-    }
+    },
+    "limit": 1
   },
   "St Omer": {
-    "name":"LFQN",
+    "name": "LFQN",
     "parking": {
       "x": 455,
       "y": 280
@@ -123,10 +128,11 @@
       "x": 465,
       "y": 290,
       "z": 20
-    }
+    },
+    "limit": 1
   },
   "Valanciennes": {
-    "name":"LFAV",
+    "name": "LFAV",
     "parking": {
       "x": 1012,
       "y": 543
@@ -144,10 +150,11 @@
       "x": 1022,
       "y": 553,
       "z": 20
-    }
+    },
+    "limit": 1
   },
   "Vitry en Artois": {
-    "name":"LFQS",
+    "name": "LFQS",
     "parking": {
       "x": 777,
       "y": 564
@@ -165,10 +172,11 @@
       "x": 787,
       "y": 574,
       "z": 20
-    }
+    },
+    "limit": 1
   },
   "Dunkerque": {
-    "name":"LFAK",
+    "name": "LFAK",
     "parking": {
       "x": 515,
       "y": 70
@@ -186,9 +194,11 @@
       "x": 525,
       "y": 80,
       "z": 20
-    }
-  },"Cambrai": {
-    "name":"LFYG",
+    },
+    "limit": 1
+  },
+  "Cambrai": {
+    "name": "LFYG",
     "parking": {
       "x": 900,
       "y": 680
@@ -206,10 +216,11 @@
       "x": 910,
       "y": 690,
       "z": 20
-    }
+    },
+    "limit": 1
   },
   "Arras Roclincourt": {
-    "name":"LFQD",
+    "name": "LFQD",
     "parking": {
       "x": 700,
       "y": 600
@@ -227,6 +238,7 @@
       "x": 710,
       "y": 610,
       "z": 20
-    }
+    },
+    "limit": 1
   }
 }

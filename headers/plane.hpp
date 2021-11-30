@@ -27,14 +27,15 @@ public:
   void setSpeed(float &newSpeed);
   Point3D nextPos(int &count);
   void setParameters(CCR &ccr);
-  CircleShape* getShape() { return &shape;};
-  void navigate();
+  CircleShape *getShape() { return &shape; };
+  void navigate(CCR &ccr);
+  void display(sf::RenderWindow &window);
 
-  // void land();
-  // void takeOf();
-  // void parkIn();
-  // void parkOut();
-  friend ostream &operator<<(ostream &os, const Plane &p);
-};
+    // void land();
+    // void takeOf();
+    // void parkIn();
+    // void parkOut();
+    friend ostream &operator<<(ostream &os, const Plane &p);
+  };
 
-void threadPlane(Plane &p);
+  void threadPlane(Plane &p, CCR &ccr);

@@ -28,7 +28,8 @@ CCR::CCR() {
             Point3D(temp["departure"]["x"], temp["departure"]["y"],
                     temp["departure"]["z"]),
             Point3D(temp["arrival"]["x"], temp["arrival"]["y"],
-                    temp["arrival"]["z"]));
+                    temp["arrival"]["z"]),
+            temp["limit"]);
       ListOfTWR.push_back(t);
     }
     file.close();
@@ -87,11 +88,10 @@ void CCR::display(RenderWindow &window) {
     text.setString(it->getName());
     font.loadFromFile("../files/arial.ttf");
     text.setFont(font);
-    text.setCharacterSize(12); // in pixels, not points!
+    text.setCharacterSize(12);
     text.setFillColor(sf::Color::Red);
     text.setStyle(Text::Bold);
-    text.setPosition(it->getPist().getX() -13,
-                     it->getPist().getY() + 10);
+    text.setPosition(it->getPist().getX() - 13, it->getPist().getY() + 10);
     window.draw(text);
     *it++;
   }

@@ -1,4 +1,5 @@
 #include "../headers/plane.hpp"
+#include <bits/types/time_t.h>
 #include <chrono>
 #include <cmath>
 #include <cstddef>
@@ -10,8 +11,8 @@
 using namespace std;
 using namespace sf;
 
-#define SPEED 0.4
-#define BASESPEED 1
+#define SPEED 10
+#define BASESPEED 0.05
 
 Plane::Plane(CCR &ccr) {
   name = "F-";
@@ -82,6 +83,7 @@ void Plane::setParameters(CCR &ccr) {
   tmp.push_back(twrDestination.getPist());
   tmp.push_back(twrDestination.getParking());
   this->setTraj(tmp);
+  this->twrDep.setNumber(1);
 }
 
 // void land() {}
@@ -90,14 +92,15 @@ void Plane::setParameters(CCR &ccr) {
 // void parkIn();
 // void parkOut();
 
-void Plane::navigate() {
+void Plane::navigate(CCR &ccr) {
   // PLANE
+  this->twrDep.setNumber(-1);
   int count = 0;
   // cout << "Thread ID : " << this_thread::get_id() << endl
   //      << "Position : " << pos << endl;
   vector<Point3D> t = this->getTraj().getList();
   while (count < int(t.size()) - 1) {
-    this->speed = SPEED * pos.getZ() + BASESPEED;
+    this->speed = SPEED * pos.getZ()/200 + BASESPEED;
     float dist1 = this->pos.distanceTo(t[count + 1]);
     Point3D nxt = this->nextPos(count);
     float dist2 = this->pos.distanceTo(nxt);
@@ -108,7 +111,7 @@ void Plane::navigate() {
 
     while (dist1 > dist2) {
       // cout << this->speed << endl;
-      this->speed = SPEED * nxt.getZ() + BASESPEED;
+      this->speed = SPEED * nxt.getZ()/200 + BASESPEED;
       pos = nxt;
       // cout << "Thread ID : " << this_thread::get_id() << endl
       //      << "Position : " << pos << endl;
@@ -119,14 +122,29 @@ void Plane::navigate() {
       //      << "Distance 2 : " << dist2 << endl
       //      << "NXT : " << nxt << endl;
       // Time sleep
-      this_thread::sleep_for(1000ms);
+      this_thread::sleep_for(16.6ms);
     }
     this->pos = t[count + 1];
-    this_thread::sleep_for(1000ms);
+    // Check if full
+    // Point3D temp=this->twrDestination.getArrival();
+    // if (this->pos.getX()==temp.getX() && this->pos.getY()==temp.getY()) {
+    //   while (this->twrDestination.getLimit()==this->twrDestination.getNumber()) {
+    //     cout<<"FULL"<<endl;
+    //   }
+    // }
+    this_thread::sleep_for(16.6ms);
 
     // cout << pos << endl << endl;
     count++;
   }
+  this->twrDep.setNumber(1);
+  this->speed = BASESPEED;
+  this->twrDep=this->twrDestination;
+  this->traj = Trajectory(this->pos);
+  this->setParameters(ccr);
+  chrono::milliseconds tempt=(chrono::milliseconds)aleat(0, 2000);
+  this_thread::sleep_for(tempt);
+  this->navigate(ccr);
 }
 
 ostream &operator<<(ostream &os, const Plane &p) {
@@ -139,4 +157,19 @@ ostream &operator<<(ostream &os, const Plane &p) {
   return os;
 }
 
-void threadPlane(Plane &p) { p.navigate(); }
+void threadPlane(Plane &p,CCR &ccr) { p.navigate(ccr); }
+
+void Plane::display(sf::RenderWindow &window) {
+  this->getShape()->setPosition(this->getPos().getX(), this->getPos().getY());
+  window.draw((*(*this).getShape()));
+  Text text;
+  Font font;
+  text.setString(this->getName());
+  font.loadFromFile("../files/arial.ttf");
+  text.setFont(font);
+  text.setCharacterSize(12); // in pixels, not points!
+  text.setFillColor(sf::Color::Blue);
+  text.setStyle(Text::Bold);
+  text.setPosition(this->getPos().getX() + 10, this->getPos().getY() + 10);
+  window.draw(text);
+}

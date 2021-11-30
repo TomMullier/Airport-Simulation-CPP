@@ -1,4 +1,7 @@
+#include <SFML/Graphics/CircleShape.hpp>
+#include <SFML/Graphics/Color.hpp>
 #include <SFML/System.hpp>
+#include <SFML/Window/Event.hpp>
 #include <cmath>
 #include <cstdlib>
 #include <fstream>
@@ -11,7 +14,7 @@
 #include "../headers/plane.hpp"
 
 #define INTERVALLE 1
-#define NBPLANES 6
+#define NBPLANES 5
 
 using namespace std;
 using namespace sf;
@@ -35,7 +38,7 @@ int main(int argc, char *argv[]) {
   // Threads
   vector<thread> T;
   for (int i = 0; i < NBPLANES; i++) {
-    thread *th = new thread(threadPlane, ref(planes[i]));
+    thread *th = new thread(threadPlane, ref(planes[i]), ref(France));
     T.push_back(move(*th));
   }
 
@@ -48,15 +51,18 @@ int main(int argc, char *argv[]) {
     }
   }
   disp.join();
+  return EXIT_SUCCESS;
 }
 
 void display(CCR &ccr, vector<Plane> &planes) {
-  RenderWindow window(VideoMode(1362, 840), "De la merde");
+  RenderWindow window(VideoMode(1362, 840), "Airport");
   while (window.isOpen()) {
     Event event;
     while (window.pollEvent(event)) {
-      if (event.type == Event::Closed)
+      if (event.type == Event::Closed) {
         window.close();
+        return;
+      }
     }
 
     window.clear();
@@ -72,30 +78,27 @@ void display(CCR &ccr, vector<Plane> &planes) {
     sprite.setScale(ScaleX, ScaleY);
     window.draw(sprite);
 
+    // Circles
+    int colorThick = 50;
+    Color color(colorThick,colorThick,colorThick);
+    for (int i = 1; i < 10; i++) {
+      CircleShape c;
+      c.setRadius(100 * i);
+      c.setOutlineColor(color);
+      c.setFillColor(Color::Transparent);
+      c.setOutlineThickness(1);
+      c.setPosition((float)window.getSize().x / 2-c.getRadius(), (float)window.getSize().y / 2-c.getRadius());
+      window.draw(c);
+    }
     // Display TWRs
     ccr.display(window);
 
     // Display planes
     vector<Plane>::iterator itPlane = planes.begin();
     while (itPlane != planes.end()) {
-      // cout << itPlane->getPos() << endl;
-      itPlane->getShape()->setPosition(itPlane->getPos().getX(),
-                                       itPlane->getPos().getY());
-      window.draw((*(*itPlane).getShape()));
-      Text text;
-      Font font;
-      text.setString(itPlane->getName());
-      font.loadFromFile("../files/arial.ttf");
-      text.setFont(font);
-      text.setCharacterSize(12); // in pixels, not points!
-      text.setFillColor(sf::Color::Blue);
-      text.setStyle(Text::Bold);
-      text.setPosition(itPlane->getPos().getX()+10,
-                                       itPlane->getPos().getY()+10);
-      window.draw(text);
-      *itPlane++;
+      (*itPlane++).display(window);
     }
     window.display();
-    this_thread::sleep_for(1000ms);
+    this_thread::sleep_for(16.6ms);
   }
 }
