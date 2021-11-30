@@ -10,6 +10,9 @@
 using namespace std;
 using namespace sf;
 
+#define SPEED 0.4
+#define BASESPEED 1
+
 Plane::Plane(CCR &ccr) {
   name = "F-";
   for (size_t i = 0; i < 4; i++)
@@ -18,13 +21,12 @@ Plane::Plane(CCR &ccr) {
   this->pos = twrDep.getParking();
   this->twrDestination = this->twrDep;
   traj = Trajectory(this->pos);
-  speed = 1;
-  // DISPLAY 
+  speed = BASESPEED;
+  // DISPLAY
   CircleShape _shape(5.f);
   _shape.setFillColor(Color::Green);
   _shape.setPosition(pos.getX(), pos.getY());
-  this->shape=_shape;
-
+  this->shape = _shape;
 }
 
 void Plane::setPos(Point3D &newPos) { pos = newPos; }
@@ -95,13 +97,18 @@ void Plane::navigate() {
   //      << "Position : " << pos << endl;
   vector<Point3D> t = this->getTraj().getList();
   while (count < int(t.size()) - 1) {
+    this->speed = SPEED * pos.getZ() + BASESPEED;
     float dist1 = this->pos.distanceTo(t[count + 1]);
     Point3D nxt = this->nextPos(count);
     float dist2 = this->pos.distanceTo(nxt);
     // cout << "Distance 1 : " << dist1 << endl
     //      << "Distance 2 : " << dist2 << endl
     //      << "NXT : " << nxt << endl;
+    cout << this->speed << endl;
+
     while (dist1 > dist2) {
+      cout << this->speed << endl;
+      this->speed = SPEED * nxt.getZ() + BASESPEED;
       pos = nxt;
       // cout << "Thread ID : " << this_thread::get_id() << endl
       //      << "Position : " << pos << endl;
@@ -115,7 +122,9 @@ void Plane::navigate() {
       this_thread::sleep_for(1000ms);
     }
     this->pos = t[count + 1];
-    cout << pos << endl << endl;
+    this_thread::sleep_for(1000ms);
+
+    // cout << pos << endl << endl;
     count++;
   }
 }
@@ -130,6 +139,4 @@ ostream &operator<<(ostream &os, const Plane &p) {
   return os;
 }
 
-void threadPlane(Plane &p) {
-  p.navigate();
-}
+void threadPlane(Plane &p) { p.navigate(); }

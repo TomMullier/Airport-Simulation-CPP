@@ -1,3 +1,4 @@
+#include <SFML/System.hpp>
 #include <cmath>
 #include <cstdlib>
 #include <fstream>
@@ -6,12 +7,11 @@
 #include <sstream>
 #include <thread>
 #include <vector>
-#include<SFML/System.hpp>
 
 #include "../headers/plane.hpp"
 
 #define INTERVALLE 1
-#define NBPLANES 1
+#define NBPLANES 6
 
 using namespace std;
 using namespace sf;
@@ -22,7 +22,6 @@ int main(int argc, char *argv[]) {
   srand(time(NULL));
   // CCR
   CCR France;
-  cout << France;
 
   // Plane
   vector<Plane> planes;
@@ -30,7 +29,7 @@ int main(int argc, char *argv[]) {
     Plane *p = new Plane(France);
     p->setParameters(France);
     planes.push_back(*p);
-    cout << *p << endl;
+    // cout << *p << endl;
   }
 
   // Threads
@@ -41,7 +40,6 @@ int main(int argc, char *argv[]) {
   }
 
   thread disp(display, ref(France), ref(planes));
-  // disp.join();
 
   vector<thread>::iterator itT = T.begin();
   while (itT != T.end()) {
@@ -49,6 +47,7 @@ int main(int argc, char *argv[]) {
       (*itT++).join();
     }
   }
+  disp.join();
 }
 
 void display(CCR &ccr, vector<Plane> &planes) {
@@ -61,16 +60,16 @@ void display(CCR &ccr, vector<Plane> &planes) {
     }
 
     window.clear();
-    
+
     // Background
     Texture texture;
     texture.loadFromFile("../files/map.jpg");
     Sprite sprite(texture);
-    Vector2u TextureSize = texture.getSize(); //Get size of texture.
-    Vector2u WindowSize = window.getSize();             //Get size of window.
-    float ScaleX = (float) WindowSize.x / TextureSize.x;
-    float ScaleY = (float) WindowSize.y / TextureSize.y;     //Calculate scale.
-    sprite.setScale(ScaleX, ScaleY); 
+    Vector2u TextureSize = texture.getSize(); // Get size of texture.
+    Vector2u WindowSize = window.getSize();   // Get size of window.
+    float ScaleX = (float)WindowSize.x / TextureSize.x;
+    float ScaleY = (float)WindowSize.y / TextureSize.y; // Calculate scale.
+    sprite.setScale(ScaleX, ScaleY);
     window.draw(sprite);
 
     // Display TWRs
@@ -79,7 +78,7 @@ void display(CCR &ccr, vector<Plane> &planes) {
     // Display planes
     vector<Plane>::iterator itPlane = planes.begin();
     while (itPlane != planes.end()) {
-      cout << itPlane->getPos() << endl;
+      // cout << itPlane->getPos() << endl;
       itPlane->getShape()->setPosition(itPlane->getPos().getX(),
                                        itPlane->getPos().getY());
       window.draw((*(*itPlane++).getShape()));
