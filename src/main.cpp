@@ -96,6 +96,6 @@ void display(CCR &ccr, vector<Plane> &planes) {
       *itPlane++;
     }
     window.display();
-    this_thread::sleep_for(1s);
+    this_thread::sleep_for(1000ms);
   }
 }

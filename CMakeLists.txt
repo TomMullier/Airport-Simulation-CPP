@@ -21,7 +21,7 @@ if(MSVC)
 endif()
 
 SET(CMAKE_CONFIGURATION_TYPES "Debug;Release" CACHE STRING "Configs" FORCE)
-
+SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -lpthread")
 find_package(SFML 2.5 COMPONENTS graphics window system REQUIRED)
 
 include_directories(headers)
