@@ -20,7 +20,7 @@ Plane::Plane(CCR &ccr) {
   traj = Trajectory(this->pos);
   speed = 1;
   // DISPLAY 
-  CircleShape _shape(100.f);
+  CircleShape _shape(5.f);
   _shape.setFillColor(Color::Green);
   _shape.setPosition(pos.getX(), pos.getY());
   this->shape=_shape;
@@ -91,8 +91,8 @@ void Plane::setParameters(CCR &ccr) {
 void Plane::navigate() {
   // PLANE
   int count = 0;
-  cout << "Thread ID : " << this_thread::get_id() << endl
-       << "Position : " << pos << endl;
+  // cout << "Thread ID : " << this_thread::get_id() << endl
+  //      << "Position : " << pos << endl;
   vector<Point3D> t = this->getTraj().getList();
   while (count < int(t.size()) - 1) {
     float dist1 = this->pos.distanceTo(t[count + 1]);
@@ -103,8 +103,8 @@ void Plane::navigate() {
     //      << "NXT : " << nxt << endl;
     while (dist1 > dist2) {
       pos = nxt;
-      cout << "Thread ID : " << this_thread::get_id() << endl
-           << "Position : " << pos << endl;
+      // cout << "Thread ID : " << this_thread::get_id() << endl
+      //      << "Position : " << pos << endl;
       dist1 = this->pos.distanceTo(t[count + 1]);
       nxt = this->nextPos(count);
       dist2 = this->pos.distanceTo(nxt);
