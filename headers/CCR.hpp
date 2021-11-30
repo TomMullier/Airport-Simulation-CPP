@@ -1,5 +1,6 @@
 #include "./TWR.hpp"
 
+#include <SFML/Graphics.hpp>
 #include <string>
 
 int aleat(int val1, int val2);
@@ -20,4 +21,5 @@ public:
   // Point3D getDeparture() const { return departure; };
   // Point3D getArrival() const { return arrival; };
   friend ostream &operator<<(ostream &os, const CCR &T);
+  void display(sf::RenderWindow &window);
 };

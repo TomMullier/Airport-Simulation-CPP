@@ -1,5 +1,3 @@
-#include <SFML/Graphics/CircleShape.hpp>
-#include <SFML/Graphics/RenderWindow.hpp>
 #include <cmath>
 #include <fstream>
 #include <iostream>
@@ -16,13 +14,10 @@
 using namespace std;
 using namespace sf;
 
-void display(vector<Plane> &planes);
+void display(CCR &ccr, vector<Plane> &planes);
 
 int main(int argc, char *argv[]) {
   srand(time(NULL));
-  // DISPLAY
-  // RenderWindow window(VideoMode(500, 500), "Comme tu veux");
-
   // CCR
   CCR France;
   cout << France;
@@ -43,25 +38,8 @@ int main(int argc, char *argv[]) {
     T.push_back(move(*th));
   }
 
-  thread disp(display, ref(planes)); //, ref(window));
-  disp.join();
-
-  // Display
-  // cout << "-------------------" << endl << endl;
-  // while (window.isOpen()) {
-  //   Event event;
-  //   while (window.pollEvent(event)) {
-  //     if (event.type == Event::Closed)
-  //       window.close();
-  //   }
-  //   vector<Plane>::iterator itPlane = planes.begin();
-  //   window.clear();
-  //   while (itPlane != planes.end()) {
-  //     (*itPlane).getShape().setPosition(itPlane->getPos().getX(),
-  //     itPlane->getPos().getY()); window.draw((*itPlane++).getShape());
-  //     window.display();
-  //   }
-  // }
+  thread disp(display, ref(France), ref(planes));
+  // disp.join();
 
   vector<thread>::iterator itT = T.begin();
   while (itT != T.end()) {
@@ -71,7 +49,7 @@ int main(int argc, char *argv[]) {
   }
 }
 
-void display(vector<Plane> &planes) { 
+void display(CCR &ccr, vector<Plane> &planes) { 
   RenderWindow window(VideoMode(200, 200), "De la merde");
   while (window.isOpen()) {
     Event event;
@@ -79,8 +57,10 @@ void display(vector<Plane> &planes) {
       if (event.type == Event::Closed)
         window.close();
     }
+
     vector<Plane>::iterator itPlane = planes.begin();
     window.clear();
+    ccr.display(window);
     while (itPlane != planes.end()) {
       cout << itPlane->getPos() << endl;
       itPlane->getShape()->setPosition(itPlane->getPos().getX(),

@@ -1,5 +1,4 @@
 #include "./CCR.hpp"
-#include <SFML/Graphics.hpp>
 #include <cmath>
 #include <vector>
 

@@ -1,5 +1,6 @@
 #include "../headers/CCR.hpp"
 
+#include <SFML/Graphics/RenderWindow.hpp>
 #include <cstdlib>
 #include <fstream>
 #include <iostream>
@@ -10,6 +11,7 @@
 
 #include "../headers/json.hpp"
 using nlohmann::json;
+using namespace sf;
 
 CCR::CCR() {
   std::ifstream file("../files/ListTWR.json");
@@ -44,14 +46,14 @@ int aleat(int val1, int val2) {
 }
 
 TWR CCR::getDep() const {
-  int idx = aleat(0, (ListOfTWR.size()-1));
+  int idx = aleat(0, (ListOfTWR.size() - 1));
   return ListOfTWR[idx];
 }
 
 TWR CCR::getArr(const TWR &dep) {
   int idx;
   do {
-    idx = aleat(0, (ListOfTWR.size()-1));
+    idx = aleat(0, (ListOfTWR.size() - 1));
   } while (ListOfTWR[idx] == dep);
   return ListOfTWR[idx];
 }
@@ -65,3 +67,21 @@ ostream &operator<<(ostream &os, const CCR &T) {
   }
   return os;
 }
+
+void CCR::display(RenderWindow &window) {
+  vector<TWR>::iterator it = ListOfTWR.begin();
+  CircleShape _shape(5.f);
+  _shape.setFillColor(Color::Red);
+  while (it != ListOfTWR.end()) {
+    _shape.setPosition((*it).getPist().getX(), (*it).getPist().getY());
+    window.draw(_shape);
+    _shape.setPosition((*it).getParking().getX(), (*it).getParking().getY());
+    window.draw(_shape);
+    _shape.setPosition((*it).getDeparture().getX(),
+                       (*it).getDeparture().getY());
+    window.draw(_shape);
+    _shape.setPosition((*it).getArrival().getX(), (*it).getArrival().getY());
+    window.draw(_shape);
+    *it++;
+  }
+};
