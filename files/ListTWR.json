@@ -1,6 +1,6 @@
 {
   "Lille": {
-    "name":"Lille",
+    "name":"LFQQ",
     "parking": {
       "x": 808,
       "y": 359
@@ -21,7 +21,7 @@
     }
   },
   "Merville": {
-    "name":"Merville",
+    "name":"LFQT",
     "parking": {
       "x": 624,
       "y": 341
@@ -42,7 +42,7 @@
     }
   },
   "Le Touquet": {
-    "name":"Le Touquet",
+    "name":"LFAT",
     "parking": {
       "x": 150,
       "y": 438
@@ -63,7 +63,7 @@
     }
   },
   "Calais": {
-    "name":"Calais",
+    "name":"LFAC",
     "parking": {
       "x": 272,
       "y": 130
@@ -84,7 +84,7 @@
     }
   },
   "Maubeuge": {
-    "name":"Maubeuge",
+    "name":"LFQJ",
     "parking": {
       "x": 1223,
       "y": 590
@@ -105,7 +105,7 @@
     }
   },
   "St Omer": {
-    "name":"St Omer",
+    "name":"LFQN",
     "parking": {
       "x": 455,
       "y": 280
@@ -126,7 +126,7 @@
     }
   },
   "Valanciennes": {
-    "name":"Valanciennes",
+    "name":"LFAV",
     "parking": {
       "x": 1012,
       "y": 543
@@ -147,7 +147,7 @@
     }
   },
   "Vitry en Artois": {
-    "name":"Vitry en Artois",
+    "name":"LFQS",
     "parking": {
       "x": 777,
       "y": 564
@@ -168,7 +168,7 @@
     }
   },
   "Dunkerque": {
-    "name":"Dunkerque",
+    "name":"LFAK",
     "parking": {
       "x": 515,
       "y": 70
@@ -188,7 +188,7 @@
       "z": 20
     }
   },"Cambrai": {
-    "name":"Cambrai",
+    "name":"LFYG",
     "parking": {
       "x": 900,
       "y": 680
@@ -209,7 +209,7 @@
     }
   },
   "Arras Roclincourt": {
-    "name":"Arras Roclincourt",
+    "name":"LFQD",
     "parking": {
       "x": 700,
       "y": 600

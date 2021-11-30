@@ -81,7 +81,19 @@ void display(CCR &ccr, vector<Plane> &planes) {
       // cout << itPlane->getPos() << endl;
       itPlane->getShape()->setPosition(itPlane->getPos().getX(),
                                        itPlane->getPos().getY());
-      window.draw((*(*itPlane++).getShape()));
+      window.draw((*(*itPlane).getShape()));
+      Text text;
+      Font font;
+      text.setString(itPlane->getName());
+      font.loadFromFile("../files/arial.ttf");
+      text.setFont(font);
+      text.setCharacterSize(12); // in pixels, not points!
+      text.setFillColor(sf::Color::Blue);
+      text.setStyle(Text::Bold);
+      text.setPosition(itPlane->getPos().getX()+10,
+                                       itPlane->getPos().getY()+10);
+      window.draw(text);
+      *itPlane++;
     }
     window.display();
     this_thread::sleep_for(1s);

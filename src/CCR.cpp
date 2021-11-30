@@ -82,6 +82,17 @@ void CCR::display(RenderWindow &window) {
     window.draw(_shape);
     _shape.setPosition((*it).getArrival().getX(), (*it).getArrival().getY());
     window.draw(_shape);
+    Text text;
+    Font font;
+    text.setString(it->getName());
+    font.loadFromFile("../files/arial.ttf");
+    text.setFont(font);
+    text.setCharacterSize(12); // in pixels, not points!
+    text.setFillColor(sf::Color::Red);
+    text.setStyle(Text::Bold);
+    text.setPosition(it->getPist().getX() -13,
+                     it->getPist().getY() + 10);
+    window.draw(text);
     *it++;
   }
 };

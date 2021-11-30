@@ -104,10 +104,10 @@ void Plane::navigate() {
     // cout << "Distance 1 : " << dist1 << endl
     //      << "Distance 2 : " << dist2 << endl
     //      << "NXT : " << nxt << endl;
-    cout << this->speed << endl;
+    // cout << this->speed << endl;
 
     while (dist1 > dist2) {
-      cout << this->speed << endl;
+      // cout << this->speed << endl;
       this->speed = SPEED * nxt.getZ() + BASESPEED;
       pos = nxt;
       // cout << "Thread ID : " << this_thread::get_id() << endl
