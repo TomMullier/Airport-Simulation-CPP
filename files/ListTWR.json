@@ -1,65 +1,232 @@
 {
-  "Paris": {
-    "name":"Paris",
+  "Lille": {
+    "name":"Lille",
     "parking": {
-      "x": 10,
-      "y": 0
+      "x": 808,
+      "y": 359
     },
     "pist": {
-      "x": 10,
-      "y": 10
+      "x": 808,
+      "y": 369
     },
     "departure": {
-      "x": 0,
-      "y": 10,
-      "z": 10
+      "x": 798,
+      "y": 369,
+      "z": 100
     },
     "arrival": {
-      "x": 20,
-      "y": 10,
-      "z": 10
+      "x": 818,
+      "y": 369,
+      "z": 100
     }
   },
   "Merville": {
     "name":"Merville",
     "parking": {
-      "x": 20,
-      "y": 100
+      "x": 624,
+      "y": 341
     },
     "pist": {
-      "x": 20,
-      "y": 110
+      "x": 624,
+      "y": 351
     },
     "departure": {
-      "x": 10,
-      "y": 110,
-      "z": 10
+      "x": 614,
+      "y": 351,
+      "z": 100
     },
     "arrival": {
-      "x": 30,
-      "y": 110,
-      "z": 10
+      "x": 634,
+      "y": 351,
+      "z": 100
     }
   },
-  "Marseille": {
-    "name":"Marseille",
+  "Le Touquet": {
+    "name":"Le Touquet",
     "parking": {
-      "x": 80,
-      "y": 30
+      "x": 150,
+      "y": 438
     },
     "pist": {
-      "x": 80,
-      "y": 40
+      "x": 150,
+      "y": 448
     },
     "departure": {
-      "x": 70,
-      "y": 40,
-      "z": 10
+      "x": 140,
+      "y": 448,
+      "z": 100
     },
     "arrival": {
-      "x": 90,
-      "y": 40,
-      "z": 10
+      "x": 160,
+      "y": 448,
+      "z": 100
+    }
+  },
+  "Calais": {
+    "name":"Calais",
+    "parking": {
+      "x": 272,
+      "y": 130
+    },
+    "pist": {
+      "x": 272,
+      "y": 140
+    },
+    "departure": {
+      "x": 262,
+      "y": 140,
+      "z": 100
+    },
+    "arrival": {
+      "x": 282,
+      "y": 140,
+      "z": 100
+    }
+  },
+  "Maubeuge": {
+    "name":"Maubeuge",
+    "parking": {
+      "x": 1223,
+      "y": 590
+    },
+    "pist": {
+      "x": 1223,
+      "y": 600
+    },
+    "departure": {
+      "x": 1213,
+      "y": 600,
+      "z": 100
+    },
+    "arrival": {
+      "x": 1233,
+      "y": 600,
+      "z": 100
+    }
+  },
+  "St Omer": {
+    "name":"St Omer",
+    "parking": {
+      "x": 455,
+      "y": 280
+    },
+    "pist": {
+      "x": 455,
+      "y": 290
+    },
+    "departure": {
+      "x": 445,
+      "y": 290,
+      "z": 100
+    },
+    "arrival": {
+      "x": 465,
+      "y": 290,
+      "z": 100
+    }
+  },
+  "Valanciennes": {
+    "name":"Valanciennes",
+    "parking": {
+      "x": 1012,
+      "y": 543
+    },
+    "pist": {
+      "x": 1012,
+      "y": 553
+    },
+    "departure": {
+      "x": 1002,
+      "y": 553,
+      "z": 100
+    },
+    "arrival": {
+      "x": 1022,
+      "y": 553,
+      "z": 100
+    }
+  },
+  "Vitry en Artois": {
+    "name":"Vitry en Artois",
+    "parking": {
+      "x": 777,
+      "y": 564
+    },
+    "pist": {
+      "x": 777,
+      "y": 574
+    },
+    "departure": {
+      "x": 767,
+      "y": 574,
+      "z": 100
+    },
+    "arrival": {
+      "x": 787,
+      "y": 574,
+      "z": 100
+    }
+  },
+  "Dunkerque": {
+    "name":"Dunkerque",
+    "parking": {
+      "x": 515,
+      "y": 70
+    },
+    "pist": {
+      "x": 515,
+      "y": 80
+    },
+    "departure": {
+      "x": 505,
+      "y": 80,
+      "z": 100
+    },
+    "arrival": {
+      "x": 525,
+      "y": 80,
+      "z": 100
+    }
+  },"Cambrai": {
+    "name":"Cambrai",
+    "parking": {
+      "x": 900,
+      "y": 680
+    },
+    "pist": {
+      "x": 900,
+      "y": 690
+    },
+    "departure": {
+      "x": 890,
+      "y": 690,
+      "z": 100
+    },
+    "arrival": {
+      "x": 910,
+      "y": 690,
+      "z": 100
+    }
+  },
+  "Arras Roclincourt": {
+    "name":"Arras Roclincourt",
+    "parking": {
+      "x": 700,
+      "y": 600
+    },
+    "pist": {
+      "x": 700,
+      "y": 610
+    },
+    "departure": {
+      "x": 690,
+      "y": 610,
+      "z": 100
+    },
+    "arrival": {
+      "x": 710,
+      "y": 610,
+      "z": 100
     }
   }
 }

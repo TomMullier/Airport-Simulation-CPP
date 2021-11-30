@@ -1,10 +1,12 @@
 #include <cmath>
+#include <cstdlib>
 #include <fstream>
 #include <iostream>
 #include <set>
 #include <sstream>
 #include <thread>
 #include <vector>
+#include<SFML/System.hpp>
 
 #include "../headers/plane.hpp"
 
@@ -49,8 +51,8 @@ int main(int argc, char *argv[]) {
   }
 }
 
-void display(CCR &ccr, vector<Plane> &planes) { 
-  RenderWindow window(VideoMode(200, 200), "De la merde");
+void display(CCR &ccr, vector<Plane> &planes) {
+  RenderWindow window(VideoMode(1362, 840), "De la merde");
   while (window.isOpen()) {
     Event event;
     while (window.pollEvent(event)) {
@@ -58,13 +60,28 @@ void display(CCR &ccr, vector<Plane> &planes) {
         window.close();
     }
 
-    vector<Plane>::iterator itPlane = planes.begin();
     window.clear();
+    
+    // Background
+    Texture texture;
+    texture.loadFromFile("../files/map.jpg");
+    Sprite sprite(texture);
+    Vector2u TextureSize = texture.getSize(); //Get size of texture.
+    Vector2u WindowSize = window.getSize();             //Get size of window.
+    float ScaleX = (float) WindowSize.x / TextureSize.x;
+    float ScaleY = (float) WindowSize.y / TextureSize.y;     //Calculate scale.
+    sprite.setScale(ScaleX, ScaleY); 
+    window.draw(sprite);
+
+    // Display TWRs
     ccr.display(window);
+
+    // Display planes
+    vector<Plane>::iterator itPlane = planes.begin();
     while (itPlane != planes.end()) {
       cout << itPlane->getPos() << endl;
       itPlane->getShape()->setPosition(itPlane->getPos().getX(),
-                                      itPlane->getPos().getY());
+                                       itPlane->getPos().getY());
       window.draw((*(*itPlane++).getShape()));
     }
     window.display();
