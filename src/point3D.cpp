@@ -36,14 +36,11 @@ float Point3D::distanceTo(Point3D &otherPoint3D) {
               pow(otherPoint3D.getZ() - z, 2));
 };
 
-bool Point3D::operator<(const Point3D &pos) {
-  if (abs(this->x) < abs(pos.x) || abs(this->y) < abs(pos.y) || abs(this->z) < abs(pos.z))
+bool Point3D::operator==(const Point3D &pos) {
+  if (this->x == pos.x && this->y == pos.y && this->z == pos.z)
     return true;
-  //if (this->y < pos.y)
-    //return true;
-  //if (this->z < pos.z)
-    //return true;
-  else return false;
+  else
+    return false;
 }
 
 ostream &operator<<(ostream &os, const Point3D &position) {

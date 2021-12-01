@@ -15,6 +15,8 @@ TWR::TWR(string _name, Point3D park, Point3D pi, Point3D dep, Point3D arr,
   arrival = arr;
   departure = dep;
   this->limit = limit;
+  occupied=false;
+  numberOfPlanes=0;
 }
 
 bool TWR::operator==(const TWR &twr) {
@@ -25,7 +27,7 @@ ostream &operator<<(ostream &os, const TWR &T) {
   os << "Name : " << T.getName() << endl
      << "Parking : " << T.getParking() << "Piste : " << T.getPist()
      << "Departure : " << T.getDeparture() << "Arrival : " << T.getArrival()
-     << endl
-     << "Limit : " << T.getLimit();
+     << "Number Of plane : " << T.getNumberOfPlanes() << endl
+     << "Limit : " << T.getLimit() << endl;
   return os;
 }

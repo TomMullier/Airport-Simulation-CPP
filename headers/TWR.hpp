@@ -9,8 +9,8 @@ private:
   Point3D departure;
   Point3D arrival;
   int limit;
-  int numberOfPlanes = 0;
-  // vector<Point3D> ListOfTWR;
+  int numberOfPlanes;
+  bool occupied;
 
 public:
   TWR(string _name = "", Point3D park = Point3D(), Point3D pi = Point3D(),
@@ -20,9 +20,11 @@ public:
   Point3D getPist() const { return pist; };
   Point3D getDeparture() const { return departure; };
   Point3D getArrival() const { return arrival; };
+  bool isOccupied() const { return occupied; }
   int getLimit() const { return limit; };
-  int getNumber() const { return numberOfPlanes; };
-  void setNumber(int x) { numberOfPlanes += x; };
+  int getNumberOfPlanes() const { return numberOfPlanes; };
+  void setNumberOfPlanes(int x) { numberOfPlanes += x; };
+  void setOccupied(bool newState) { occupied = newState; };
   bool operator==(const TWR &twr);
   friend ostream &operator<<(ostream &os, const TWR &T);
 };

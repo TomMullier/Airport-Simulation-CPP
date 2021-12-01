@@ -18,5 +18,5 @@ public:
   float getZ();
   float distanceTo(Point3D &otherPoint3D);
   friend ostream &operator<<(ostream &os, const Point3D &position);
-  bool operator<(const Point3D &pos);
+  bool operator==(const Point3D &pos);
 };

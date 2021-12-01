@@ -22,7 +22,7 @@ CCR::CCR() {
     for (auto it = j.begin(); it != j.end(); ++it) {
       json temp;
       temp = *it;
-      TWR t(temp["name"],
+      TWR *t = new TWR (temp["name"],
             Point3D(temp["parking"]["x"], temp["parking"]["y"], 0),
             Point3D(temp["pist"]["x"], temp["pist"]["y"], 0),
             Point3D(temp["departure"]["x"], temp["departure"]["y"],
@@ -30,7 +30,7 @@ CCR::CCR() {
             Point3D(temp["arrival"]["x"], temp["arrival"]["y"],
                     temp["arrival"]["z"]),
             temp["limit"]);
-      ListOfTWR.push_back(t);
+      ListOfTWR.push_back(*t);
     }
     file.close();
   } else {

@@ -14,7 +14,7 @@
 #include "../headers/plane.hpp"
 
 #define INTERVALLE 1
-#define NBPLANES 5
+#define NBPLANES 6
 
 using namespace std;
 using namespace sf;
@@ -80,14 +80,15 @@ void display(CCR &ccr, vector<Plane> &planes) {
 
     // Circles
     int colorThick = 50;
-    Color color(colorThick,colorThick,colorThick);
+    Color color(colorThick, colorThick, colorThick);
     for (int i = 1; i < 10; i++) {
       CircleShape c;
       c.setRadius(100 * i);
       c.setOutlineColor(color);
       c.setFillColor(Color::Transparent);
       c.setOutlineThickness(1);
-      c.setPosition((float)window.getSize().x / 2-c.getRadius(), (float)window.getSize().y / 2-c.getRadius());
+      c.setPosition((float)window.getSize().x / 2 - c.getRadius(),
+                    (float)window.getSize().y / 2 - c.getRadius());
       window.draw(c);
     }
     // Display TWRs

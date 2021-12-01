@@ -29,6 +29,7 @@ public:
   void setParameters(CCR &ccr);
   CircleShape *getShape() { return &shape; };
   void navigate(CCR &ccr);
+  void rotate();
   void display(sf::RenderWindow &window);
 
     // void land();
