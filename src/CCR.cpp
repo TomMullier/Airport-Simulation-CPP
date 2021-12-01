@@ -30,7 +30,7 @@ CCR::CCR() {
             Point3D(temp["arrival"]["x"], temp["arrival"]["y"],
                     temp["arrival"]["z"]),
             temp["limit"]);
-      ListOfTWR.push_back(*t);
+      ListOfTWR.push_back(t);
     }
     file.close();
   } else {
@@ -46,12 +46,12 @@ int aleat(int val1, int val2) {
   return (rand() % ((val2 - val1) + 1)) + val1;
 }
 
-TWR CCR::getDep() const {
+TWR* CCR::getDep() {
   int idx = aleat(0, (ListOfTWR.size() - 1));
   return ListOfTWR[idx];
 }
 
-TWR CCR::getArr(const TWR &dep) {
+TWR* CCR::getArr(TWR* &dep) {
   int idx;
   do {
     idx = aleat(0, (ListOfTWR.size() - 1));
@@ -59,10 +59,10 @@ TWR CCR::getArr(const TWR &dep) {
   return ListOfTWR[idx];
 }
 
-ostream &operator<<(ostream &os, const CCR &T) {
+ostream &operator<<(ostream &os, CCR &T) {
   os << "List :" << endl;
-  vector<TWR> l = T.getList();
-  vector<TWR>::iterator it = l.begin();
+  vector<TWR*> l = T.getList();
+  vector<TWR*>::iterator it = l.begin();
   while (it != l.end()) {
     cout << *it++ << endl;
   }
@@ -70,28 +70,28 @@ ostream &operator<<(ostream &os, const CCR &T) {
 }
 
 void CCR::display(RenderWindow &window) {
-  vector<TWR>::iterator it = ListOfTWR.begin();
+  vector<TWR*>::iterator it = ListOfTWR.begin();
   CircleShape _shape(5.f);
   _shape.setFillColor(Color::Red);
   while (it != ListOfTWR.end()) {
-    _shape.setPosition((*it).getPist().getX(), (*it).getPist().getY());
+    _shape.setPosition((*it)->getPist().getX(), (*it)->getPist().getY());
     window.draw(_shape);
-    _shape.setPosition((*it).getParking().getX(), (*it).getParking().getY());
+    _shape.setPosition((*it)->getParking().getX(), (*it)->getParking().getY());
     window.draw(_shape);
-    _shape.setPosition((*it).getDeparture().getX(),
-                       (*it).getDeparture().getY());
+    _shape.setPosition((*it)->getDeparture().getX(),
+                       (*it)->getDeparture().getY());
     window.draw(_shape);
-    _shape.setPosition((*it).getArrival().getX(), (*it).getArrival().getY());
+    _shape.setPosition((*it)->getArrival().getX(), (*it)->getArrival().getY());
     window.draw(_shape);
     Text text;
     Font font;
-    text.setString(it->getName());
+    text.setString((*it)->getName());
     font.loadFromFile("../files/arial.ttf");
     text.setFont(font);
     text.setCharacterSize(12);
     text.setFillColor(sf::Color::Red);
     text.setStyle(Text::Bold);
-    text.setPosition(it->getPist().getX() - 13, it->getPist().getY() + 10);
+    text.setPosition((*it)->getPist().getX() - 13, (*it)->getPist().getY() + 10);
     window.draw(text);
     *it++;
   }

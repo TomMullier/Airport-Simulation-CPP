@@ -19,7 +19,9 @@ Plane::Plane(CCR &ccr) {
   for (size_t i = 0; i < 4; i++)
     name += aleat(90, 65);
   this->twrDep = ccr.getDep();
-  this->pos = twrDep.getParking();
+  this->twrDep->setNumberOfPlanes(1);
+  cout << this->twrDep << endl;
+  this->pos = twrDep->getParking();
   this->twrDestination = this->twrDep;
   traj = Trajectory(this->pos);
   speed = BASESPEED;
@@ -28,7 +30,6 @@ Plane::Plane(CCR &ccr) {
   _shape.setFillColor(Color::Green);
   _shape.setPosition(pos.getX(), pos.getY());
   this->shape = _shape;
-  this->twrDep.setNumberOfPlanes(1);
 }
 
 void Plane::setPos(Point3D &newPos) { pos = newPos; }
@@ -74,11 +75,11 @@ Point3D Plane::nextPos(int &count) {
 void Plane::setParameters(CCR &ccr) {
   this->twrDestination = ccr.getArr(this->twrDep);
   vector<Point3D> tmp;
-  tmp.push_back(twrDep.getPist());
-  tmp.push_back(twrDep.getDeparture());
-  tmp.push_back(twrDestination.getArrival());
-  tmp.push_back(twrDestination.getPist());
-  tmp.push_back(twrDestination.getParking());
+  tmp.push_back(twrDep->getPist());
+  tmp.push_back(twrDep->getDeparture());
+  tmp.push_back(twrDestination->getArrival());
+  tmp.push_back(twrDestination->getPist());
+  tmp.push_back(twrDestination->getParking());
   this->setTraj(tmp);
 }
 
@@ -86,13 +87,11 @@ void Plane::navigate(CCR &ccr) {
   // Init
   int count = 0;
   vector<Point3D> t = this->getTraj().getList();
-  // cout << this->twrDep.isOccupied() << endl;
-  // cout << this->twrDestination.isOccupied() << endl<<endl;
   // Vérification si décollage possible
-  while (this->twrDep.isOccupied() == true) {
+  while (this->twrDep->isOccupied() == true) {
     this_thread::sleep_for(1000ms);
   };
-  this->twrDep.setOccupied(true);
+  this->twrDep->setOccupied(true);
   // cout << this->twrDep.isOccupied() << endl;
   // cout << this->twrDestination.isOccupied() << endl<<endl;
 
@@ -100,8 +99,8 @@ void Plane::navigate(CCR &ccr) {
   while (count < int(t.size()) - 1) {
     // On libère la place de parking
     if (this->pos == this->getDep().getDeparture()) {
-      this->twrDep.setNumberOfPlanes(-1);
-      this->twrDep.setOccupied(false);
+      this->twrDep->setNumberOfPlanes(-1);
+      this->twrDep->setOccupied(false);
     }
 
     // Navigation
@@ -126,22 +125,22 @@ void Plane::navigate(CCR &ccr) {
 
     // Check if full
     // Si à l'arrivée on check les places et si piste libre
-    if (this->pos == this->twrDestination.getArrival()) {
-      cout<<this->getDestination()<<endl;
+    if (this->pos == this->twrDestination->getArrival()) {
+      // cout<<this->getDestination()<<endl;
       // cout << this->twrDep.isOccupied() << endl;
-      cout << this->twrDestination.isOccupied() << endl<<endl;
-      while (this->twrDestination.isOccupied()) {
+      // cout << this->twrDestination.isOccupied() << endl<<endl;
+      while (this->twrDestination->isOccupied()) {
         // Attente
         rotate();
       }
       // On atteri
-      this->twrDestination.setNumberOfPlanes(1);
-      this->twrDestination.setOccupied(true);
+      this->twrDestination->setNumberOfPlanes(1);
+      this->twrDestination->setOccupied(true);
     }
     this_thread::sleep_for(16.6ms);
     count++;
   }
-  this->twrDestination.setOccupied(false);
+  this->twrDestination->setOccupied(false);
   this->speed = BASESPEED;
   this->twrDep = this->twrDestination;
   this->traj = Trajectory(this->pos);

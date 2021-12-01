@@ -8,13 +8,13 @@ int aleat(int val1, int val2);
 
 class CCR {
 private:
-  vector<TWR> ListOfTWR;
+  vector<TWR*> ListOfTWR;
 
 public:
   CCR();
-  vector<TWR> getList() const{return ListOfTWR;};
-  TWR getDep() const;
-  TWR getArr(const TWR &dep);
+  vector<TWR*> getList() {return ListOfTWR;};
+  TWR* getDep();
+  TWR* getArr(TWR* &dep);
   friend ostream &operator<<(ostream &os, const CCR &T);
   void display(sf::RenderWindow &window);
 };

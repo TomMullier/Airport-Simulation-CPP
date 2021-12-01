@@ -8,8 +8,8 @@ class Plane {
 private:
   string name;
   Point3D pos;
-  TWR twrDep;
-  TWR twrDestination;
+  TWR* twrDep;
+  TWR* twrDestination;
   Trajectory traj;
   float speed;
   CircleShape shape;
@@ -18,8 +18,8 @@ public:
   Plane(CCR &ccr);
   string getName() const { return name; };
   Point3D getPos() const { return pos; };
-  TWR getDep() const { return twrDep; };
-  TWR getDestination() const { return twrDestination; };
+  TWR getDep() const { return *twrDep; };
+  TWR getDestination() const { return *twrDestination; };
   Trajectory getTraj() const { return traj; };
   float getSpeed() const { return speed; };
   void setPos(Point3D &newPos);
