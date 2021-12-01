@@ -3,18 +3,21 @@
 #include <SFML/Graphics.hpp>
 #include <string>
 
-int aleat(int val1, int val2);
-
-
 class CCR {
 private:
-  vector<TWR*> ListOfTWR;
+  vector<TWR *> ListOfTWR;
 
 public:
+  // Constructor
   CCR();
-  vector<TWR*> getList() {return ListOfTWR;};
-  TWR* getDep();
-  TWR* getArr(TWR* &dep);
-  friend ostream &operator<<(ostream &os, const CCR &T);
+  // Setters & Getters
+  vector<TWR *> getList() { return ListOfTWR; };
+  TWR *getDep() const;
+  TWR *getArr(TWR *&dep) const;
+  // Other functions
   void display(sf::RenderWindow &window);
+  // Operator
+  friend ostream &operator<<(ostream &os, const CCR &T);
 };
+
+int aleat(int val1, int val2);

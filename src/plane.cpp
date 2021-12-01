@@ -14,13 +14,18 @@ using namespace sf;
 #define SPEED 10
 #define BASESPEED 0.05
 
+/**
+ * Constructor
+ *
+ * @return  Plane   Plane created and attributs set
+ */
 Plane::Plane(CCR &ccr) {
   name = "F-";
   for (size_t i = 0; i < 4; i++)
     name += aleat(90, 65);
   this->twrDep = ccr.getDep();
   this->twrDep->setNumberOfPlanes(1);
-  cout << this->twrDep << endl;
+  cout << *this->twrDep << endl;
   this->pos = twrDep->getParking();
   this->twrDestination = this->twrDep;
   traj = Trajectory(this->pos);
@@ -32,8 +37,28 @@ Plane::Plane(CCR &ccr) {
   this->shape = _shape;
 }
 
-void Plane::setPos(Point3D &newPos) { pos = newPos; }
+/**
+ * Set TWR of destination
+ *
+ * @return  void
+ */
+void Plane::setParameters(CCR &ccr) {
+  this->twrDestination = ccr.getArr(this->twrDep);
+  vector<Point3D> tmp;
+  tmp.push_back(twrDep->getPist());
+  tmp.push_back(twrDep->getDeparture());
+  tmp.push_back(twrDestination->getArrival());
+  tmp.push_back(twrDestination->getPist());
+  tmp.push_back(twrDestination->getParking());
+  this->setTraj(tmp);
+}
 
+/**
+ * Define the trajectory of plane, trajectory is composed of all important
+ * points plane must pass
+ *
+ * @return  void
+ */
 void Plane::setTraj(vector<Point3D> &newTraj) {
   vector<Point3D>::iterator it = newTraj.begin();
   while (it != newTraj.end()) {
@@ -41,8 +66,14 @@ void Plane::setTraj(vector<Point3D> &newTraj) {
   }
 }
 
-void Plane::setSpeed(float &newSpeed) { speed = newSpeed; }
-
+/**
+ * Calculate the next position of our trajectory (from actual position to next
+ * point in trajectory)
+ *
+ * @param   int      count  Use as index to know next point of trajectory
+ *
+ * @return  Point3D         [Next position
+ */
 Point3D Plane::nextPos(int &count) {
   float r = speed;
   Point3D tmp(this->getPos().getX(), this->getPos().getY(),
@@ -72,33 +103,25 @@ Point3D Plane::nextPos(int &count) {
   return tmp;
 }
 
-void Plane::setParameters(CCR &ccr) {
-  this->twrDestination = ccr.getArr(this->twrDep);
-  vector<Point3D> tmp;
-  tmp.push_back(twrDep->getPist());
-  tmp.push_back(twrDep->getDeparture());
-  tmp.push_back(twrDestination->getArrival());
-  tmp.push_back(twrDestination->getPist());
-  tmp.push_back(twrDestination->getParking());
-  this->setTraj(tmp);
-}
-
+/**
+ * Move plane from a TWR to another TWR during all program
+ *
+ * @return  void
+ */
 void Plane::navigate(CCR &ccr) {
   // Init
   int count = 0;
   vector<Point3D> t = this->getTraj().getList();
-  // Vérification si décollage possible
+  // Chek take off possible
   while (this->twrDep->isOccupied() == true) {
     this_thread::sleep_for(1000ms);
   };
   this->twrDep->setOccupied(true);
-  // cout << this->twrDep.isOccupied() << endl;
-  // cout << this->twrDestination.isOccupied() << endl<<endl;
 
-  // Décollage + navigation
+  // Take off
   while (count < int(t.size()) - 1) {
     // On libère la place de parking
-    if (this->pos == this->getDep().getDeparture()) {
+    if (this->pos == this->getDep()->getDeparture()) {
       this->twrDep->setNumberOfPlanes(-1);
       this->twrDep->setOccupied(false);
     }
@@ -109,7 +132,7 @@ void Plane::navigate(CCR &ccr) {
     Point3D nxt = this->nextPos(count);
     float dist2 = this->pos.distanceTo(nxt);
 
-    // Entre deux points de Traj
+    // Between 2 points of traj
     while (dist1 > dist2) {
       this->speed = SPEED * nxt.getZ() / 200 + BASESPEED;
       pos = nxt;
@@ -117,39 +140,40 @@ void Plane::navigate(CCR &ccr) {
       nxt = this->nextPos(count);
       dist2 = this->pos.distanceTo(nxt);
       this_thread::sleep_for(16.6ms);
-      // cout << this->twrDep.isOccupied() << endl;
-      // cout << this->twrDestination.isOccupied() << endl<<endl;
     }
-    // Téléportation si dépassé
+    // Change pos
     this->pos = t[count + 1];
 
-    // Check if full
-    // Si à l'arrivée on check les places et si piste libre
+    // Check if full or runway free
     if (this->pos == this->twrDestination->getArrival()) {
-      // cout<<this->getDestination()<<endl;
-      // cout << this->twrDep.isOccupied() << endl;
-      // cout << this->twrDestination.isOccupied() << endl<<endl;
       while (this->twrDestination->isOccupied()) {
         // Attente
         rotate();
       }
-      // On atteri
+      // Landing
       this->twrDestination->setNumberOfPlanes(1);
       this->twrDestination->setOccupied(true);
     }
     this_thread::sleep_for(16.6ms);
     count++;
   }
+  // Is arrived and set plane with new datas
   this->twrDestination->setOccupied(false);
   this->speed = BASESPEED;
   this->twrDep = this->twrDestination;
   this->traj = Trajectory(this->pos);
+  // Define new destination
   this->setParameters(ccr);
   chrono::milliseconds tempt = (chrono::milliseconds)aleat(0, 2000);
   this_thread::sleep_for(tempt);
   this->navigate(ccr);
 }
 
+/**
+ * Turn around airport
+ *
+ * @return  void
+ */
 void Plane::rotate() {
   // Condition :
   // Nombre d'avion dans l'aeroport = limit
@@ -158,18 +182,11 @@ void Plane::rotate() {
   cout << "FULL" << endl;
 }
 
-ostream &operator<<(ostream &os, const Plane &p) {
-  os << "Name : " << p.getName() << endl << endl;
-  os << "Position : " << p.getPos() << endl;
-  os << "TWR Departure : " << endl << p.getDep() << endl;
-  os << "Destination : " << endl << p.getDestination() << endl;
-  os << "Trajectory : " << endl << p.getTraj() << endl;
-  os << "Speed : " << p.getSpeed() << endl;
-  return os;
-}
-
-void threadPlane(Plane &p, CCR &ccr) { p.navigate(ccr); }
-
+/**
+ * Display planes on SFML window
+ *
+ * @return  void
+ */
 void Plane::display(sf::RenderWindow &window) {
   this->getShape()->setPosition(this->getPos().getX(), this->getPos().getY());
   window.draw((*(*this).getShape()));
@@ -184,3 +201,20 @@ void Plane::display(sf::RenderWindow &window) {
   text.setPosition(this->getPos().getX() + 10, this->getPos().getY() + 10);
   window.draw(text);
 }
+
+/**
+ * Operator << overloaded
+ *
+ * @return  ostream information to print
+ */
+ostream &operator<<(ostream &os, const Plane &p) {
+  os << "Name : " << p.getName() << endl << endl;
+  os << "Position : " << p.getPos() << endl;
+  os << "TWR Departure : " << endl << p.getDep() << endl;
+  os << "Destination : " << endl << p.getDestination() << endl;
+  os << "Trajectory : " << endl << p.getTraj() << endl;
+  os << "Speed : " << p.getSpeed() << endl;
+  return os;
+}
+
+void threadPlane(Plane &p, CCR &ccr) { p.navigate(ccr); }

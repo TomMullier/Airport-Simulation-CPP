@@ -13,6 +13,11 @@
 using nlohmann::json;
 using namespace sf;
 
+/**
+ * Constructor of CCR
+ *
+ * @return  CCR     CCR created and attributs set
+ */
 CCR::CCR() {
   std::ifstream file("../files/ListTWR.json");
   json j;
@@ -22,14 +27,14 @@ CCR::CCR() {
     for (auto it = j.begin(); it != j.end(); ++it) {
       json temp;
       temp = *it;
-      TWR *t = new TWR (temp["name"],
-            Point3D(temp["parking"]["x"], temp["parking"]["y"], 0),
-            Point3D(temp["pist"]["x"], temp["pist"]["y"], 0),
-            Point3D(temp["departure"]["x"], temp["departure"]["y"],
-                    temp["departure"]["z"]),
-            Point3D(temp["arrival"]["x"], temp["arrival"]["y"],
-                    temp["arrival"]["z"]),
-            temp["limit"]);
+      TWR *t = new TWR(temp["name"],
+                       Point3D(temp["parking"]["x"], temp["parking"]["y"], 0),
+                       Point3D(temp["pist"]["x"], temp["pist"]["y"], 0),
+                       Point3D(temp["departure"]["x"], temp["departure"]["y"],
+                               temp["departure"]["z"]),
+                       Point3D(temp["arrival"]["x"], temp["arrival"]["y"],
+                               temp["arrival"]["z"]),
+                       temp["limit"]);
       ListOfTWR.push_back(t);
     }
     file.close();
@@ -40,18 +45,22 @@ CCR::CCR() {
   }
 }
 
-int aleat(int val1, int val2) {
-  if (val1 > val2)
-    swap(val1, val2);
-  return (rand() % ((val2 - val1) + 1)) + val1;
-}
-
-TWR* CCR::getDep() {
+/**
+ * Choose a TWR of Departure
+ *
+ * @return  TWR     TWR of Departure for a plane
+ */
+TWR *CCR::getDep() const {
   int idx = aleat(0, (ListOfTWR.size() - 1));
   return ListOfTWR[idx];
 }
 
-TWR* CCR::getArr(TWR* &dep) {
+/**
+ * Choose a TWR of Destionation different of Departure
+ *
+ * @return  TWR     TWR of Destination for a plane
+ */
+TWR *CCR::getArr(TWR *&dep) const {
   int idx;
   do {
     idx = aleat(0, (ListOfTWR.size() - 1));
@@ -59,18 +68,13 @@ TWR* CCR::getArr(TWR* &dep) {
   return ListOfTWR[idx];
 }
 
-ostream &operator<<(ostream &os, CCR &T) {
-  os << "List :" << endl;
-  vector<TWR*> l = T.getList();
-  vector<TWR*>::iterator it = l.begin();
-  while (it != l.end()) {
-    cout << *it++ << endl;
-  }
-  return os;
-}
-
+/**
+ * Display TWR of CCR on SFML window
+ *
+ * @return  void
+ */
 void CCR::display(RenderWindow &window) {
-  vector<TWR*>::iterator it = ListOfTWR.begin();
+  vector<TWR *>::iterator it = ListOfTWR.begin();
   CircleShape _shape(5.f);
   _shape.setFillColor(Color::Red);
   while (it != ListOfTWR.end()) {
@@ -91,8 +95,38 @@ void CCR::display(RenderWindow &window) {
     text.setCharacterSize(12);
     text.setFillColor(sf::Color::Red);
     text.setStyle(Text::Bold);
-    text.setPosition((*it)->getPist().getX() - 13, (*it)->getPist().getY() + 10);
+    text.setPosition((*it)->getPist().getX() - 13,
+                     (*it)->getPist().getY() + 10);
     window.draw(text);
     *it++;
   }
 };
+
+/**
+ * Operator << overloaded
+ *
+ * @return  ostream information to print
+ */
+ostream &operator<<(ostream &os, CCR &T) {
+  os << "List :" << endl;
+  vector<TWR *> l = T.getList();
+  vector<TWR *>::iterator it = l.begin();
+  while (it != l.end()) {
+    cout << *it++ << endl;
+  }
+  return os;
+}
+
+/**
+ * Find random number between 2 values
+ *
+ * @param   int  val1  minimum value
+ * @param   int  val2  maximum value
+ *
+ * @return  int        random value
+ */
+int aleat(int val1, int val2) {
+  if (val1 > val2)
+    swap(val1, val2);
+  return (rand() % ((val2 - val1) + 1)) + val1;
+}
