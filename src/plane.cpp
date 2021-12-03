@@ -14,6 +14,7 @@ using namespace sf;
 
 #define SPEED 10
 #define BASESPEED 0.05
+chrono::milliseconds INTERVAL =(chrono::milliseconds) 16;
 
 /**
  * Constructor
@@ -26,7 +27,6 @@ Plane::Plane(CCR &ccr) {
     name += aleat(90, 65);
   this->twrDep = ccr.getDep();
   this->twrDep->setNumberOfPlanes(1);
-  cout << *this->twrDep << endl;
   this->pos = twrDep->getParking();
   this->twrDestination = this->twrDep;
   traj = Trajectory(this->pos);
@@ -121,6 +121,17 @@ void Plane::navigate(CCR &ccr) {
 
   // Take off
   while (count < int(t.size()) - 1) {
+    // Check if full or runway free
+    if (this->pos == this->twrDestination->getArrival()) {
+      if (this->twrDestination->isOccupied()) {
+        // Attente
+        rotate(0);
+      }
+      this->pos = this->twrDestination->getArrival();
+      // Landing
+      this->twrDestination->setNumberOfPlanes(1);
+      this->twrDestination->setOccupied(true);
+    }
     // On libère la place de parking
     if (this->pos == this->getDep()->getDeparture()) {
       this->twrDep->setNumberOfPlanes(-1);
@@ -140,22 +151,12 @@ void Plane::navigate(CCR &ccr) {
       dist1 = this->pos.distanceTo(t[count + 1]);
       nxt = this->nextPos(count);
       dist2 = this->pos.distanceTo(nxt);
-      this_thread::sleep_for(16.6ms);
+      this_thread::sleep_for(INTERVAL);
     }
     // Change pos
     this->pos = t[count + 1];
 
-    // Check if full or runway free
-    if (this->pos == this->twrDestination->getArrival()) {
-      while (this->twrDestination->isOccupied()) {
-        // Attente
-        rotate();
-      }
-      // Landing
-      this->twrDestination->setNumberOfPlanes(1);
-      this->twrDestination->setOccupied(true);
-    }
-    this_thread::sleep_for(16.6ms);
+    this_thread::sleep_for(INTERVAL);
     count++;
   }
   // Is arrived and set plane with new datas
@@ -175,31 +176,34 @@ void Plane::navigate(CCR &ccr) {
  *
  * @return  void
  */
-void Plane::rotate() {
+void Plane::rotate(int _i) {
   // Condition :
   // Nombre d'avion dans l'aeroport = limit
   // Avion en train de décoler ou atterrir (state tour décollage ou atterissage)
   // Avion peut décoller si tour libre sinon reste sur parking
-  // int circle_iterations = 100;
-  Point3D pointToRotate = this->pos;
   Point3D centerPoint = this->twrDestination->getPist();
-  int numberOfIt = 4;
-  double angleInRadians = 45 * (M_PI / 180);
-  double cosTheta = cos(angleInRadians);
-  double sinTheta = sin(angleInRadians);
-  cout << pos << endl;
-  for (int i = 0; i < numberOfIt; i++) {
-    int X = (int)(cosTheta * (pointToRotate.getX() - centerPoint.getX()) -
-                  sinTheta * (pointToRotate.getY() - centerPoint.getY()) +
-                  centerPoint.getX());
-    int Y = (int)(sinTheta * (pointToRotate.getX() - centerPoint.getX()) +
-                  cosTheta * (pointToRotate.getY() - centerPoint.getY()) +
-                  centerPoint.getY());
-    this->pos.setX(X);
-    this->pos.setY(Y);
-    cout << pos << endl;
-    this_thread::sleep_for(16.6ms);
+  float numberOfIt = 200;
+  float angleInRadians = (360 / numberOfIt) * (M_PI / 180);
+  float cosTheta = cos(angleInRadians);
+  float sinTheta = sin(angleInRadians);
+  Point3D pointToRotate = this->pos;
+  float X = (cosTheta * (pointToRotate.getX() - centerPoint.getX()) -
+             sinTheta * (pointToRotate.getY() - centerPoint.getY()) +
+             centerPoint.getX());
+  float Y = (sinTheta * (pointToRotate.getX() - centerPoint.getX()) +
+             cosTheta * (pointToRotate.getY() - centerPoint.getY()) +
+             centerPoint.getY());
+  this->pos.setX(X);
+  this->pos.setY(Y);
+  _i++;
+  if (_i != numberOfIt) {
+    this_thread::sleep_for(INTERVAL);
+    rotate(_i);
+  } else if (this->twrDestination->isOccupied()) {
+    // Attente
+    rotate(0);
   }
+  return;
 }
 
 /**

@@ -32,7 +32,7 @@ public:
   // Other fonctions
   Point3D nextPos(int &count);
   void navigate(CCR &ccr);
-  void rotate();
+  void rotate(int _i);
   void display(sf::RenderWindow &window);
   // Operator
   friend ostream &operator<<(ostream &os, const Plane &p);
