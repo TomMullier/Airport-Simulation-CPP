@@ -50,7 +50,7 @@ void Point3D::setXYZ(const float &newx, const float &newy, const float &newz) {
  *
  * @return  float   Distance between the 2 points
  */
-float Point3D::distanceTo(Point3D &otherPoint3D) {
+float Point3D::distanceTo(Point3D &otherPoint3D) const {
   return sqrt(pow(otherPoint3D.getX() - x, 2) +
               pow(otherPoint3D.getY() - y, 2) +
               pow(otherPoint3D.getZ() - z, 2));

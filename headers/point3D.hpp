@@ -1,3 +1,4 @@
+#include <complex>
 #include <iostream>
 
 using namespace std;
@@ -19,8 +20,9 @@ public:
   float getY() const { return y; };
   float getZ() const { return z; };
   // Other functions
-  float distanceTo(Point3D &otherPoint3D);
+  float distanceTo(Point3D &otherPoint3D) const;
   // Operator
   friend ostream &operator<<(ostream &os, const Point3D &position);
+
   bool operator==(const Point3D &pos);
 };

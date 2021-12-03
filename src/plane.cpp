@@ -2,6 +2,7 @@
 #include <bits/types/time_t.h>
 #include <chrono>
 #include <cmath>
+#include <complex>
 #include <cstddef>
 #include <iterator>
 #include <math.h>
@@ -179,7 +180,26 @@ void Plane::rotate() {
   // Nombre d'avion dans l'aeroport = limit
   // Avion en train de décoler ou atterrir (state tour décollage ou atterissage)
   // Avion peut décoller si tour libre sinon reste sur parking
-  cout << "FULL" << endl;
+  // int circle_iterations = 100;
+  Point3D pointToRotate = this->pos;
+  Point3D centerPoint = this->twrDestination->getPist();
+  int numberOfIt = 4;
+  double angleInRadians = 45 * (M_PI / 180);
+  double cosTheta = cos(angleInRadians);
+  double sinTheta = sin(angleInRadians);
+  cout << pos << endl;
+  for (int i = 0; i < numberOfIt; i++) {
+    int X = (int)(cosTheta * (pointToRotate.getX() - centerPoint.getX()) -
+                  sinTheta * (pointToRotate.getY() - centerPoint.getY()) +
+                  centerPoint.getX());
+    int Y = (int)(sinTheta * (pointToRotate.getX() - centerPoint.getX()) +
+                  cosTheta * (pointToRotate.getY() - centerPoint.getY()) +
+                  centerPoint.getY());
+    this->pos.setX(X);
+    this->pos.setY(Y);
+    cout << pos << endl;
+    this_thread::sleep_for(16.6ms);
+  }
 }
 
 /**
