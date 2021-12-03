@@ -14,7 +14,8 @@ using namespace sf;
 
 #define SPEED 10
 #define BASESPEED 0.05
-chrono::milliseconds INTERVAL =(chrono::milliseconds) 16;
+
+chrono::milliseconds INTERVAL = (chrono::milliseconds)16;
 
 /**
  * Constructor
