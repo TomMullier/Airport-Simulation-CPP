@@ -6,6 +6,7 @@
 #include <cstddef>
 #include <iterator>
 #include <math.h>
+#include <mutex>
 #include <thread>
 #include <vector>
 
@@ -16,6 +17,7 @@ using namespace sf;
 #define BASESPEED 0.05
 
 chrono::milliseconds INTERVAL = (chrono::milliseconds)16;
+std::mutex mtx;
 
 /**
  * Constructor
@@ -37,6 +39,10 @@ Plane::Plane(CCR &ccr) {
   _shape.setFillColor(Color::Green);
   _shape.setPosition(pos.getX(), pos.getY());
   this->shape = _shape;
+  // Display state
+  mtx.lock();
+  cout << this->name << " generated at " << this->twrDep->getName() << endl;
+  mtx.unlock();
 }
 
 /**
@@ -53,6 +59,10 @@ void Plane::setParameters(CCR &ccr) {
   tmp.push_back(twrDestination->getPist());
   tmp.push_back(twrDestination->getParking());
   this->setTraj(tmp);
+  mtx.lock();
+  cout << this->name << " set destination to "
+       << this->twrDestination->getName() << endl;
+  mtx.unlock();
 }
 
 /**
@@ -119,6 +129,9 @@ void Plane::navigate(CCR &ccr) {
     this_thread::sleep_for(1000ms);
   };
   this->twrDep->setOccupied(true);
+  mtx.lock();
+  cout << this->name << " take off from " << this->twrDep->getName() << endl;
+  mtx.unlock();
 
   // Take off
   while (count < int(t.size()) - 1) {
@@ -126,12 +139,20 @@ void Plane::navigate(CCR &ccr) {
     if (this->pos == this->twrDestination->getArrival()) {
       if (this->twrDestination->isOccupied()) {
         // Attente
+        mtx.lock();
+        cout << this->name << " is waiting to land to "
+             << this->twrDestination->getName() << endl;
+        mtx.unlock();
         rotate(0);
       }
       this->pos = this->twrDestination->getArrival();
       // Landing
       this->twrDestination->setNumberOfPlanes(1);
       this->twrDestination->setOccupied(true);
+      mtx.lock();
+      cout << this->name << " land to " << this->twrDestination->getName()
+           << endl;
+      mtx.unlock();
     }
     // On libère la place de parking
     if (this->pos == this->getDep()->getDeparture()) {
@@ -161,14 +182,18 @@ void Plane::navigate(CCR &ccr) {
     count++;
   }
   // Is arrived and set plane with new datas
+  mtx.lock();
+  cout << this->name << " arrived to " << this->twrDestination->getName()
+       << endl;
+  mtx.unlock();
   this->twrDestination->setOccupied(false);
   this->speed = BASESPEED;
   this->twrDep = this->twrDestination;
   this->traj = Trajectory(this->pos);
   // Define new destination
-  this->setParameters(ccr);
   chrono::milliseconds tempt = (chrono::milliseconds)aleat(0, 2000);
   this_thread::sleep_for(tempt);
+  this->setParameters(ccr);
   this->navigate(ccr);
 }
 
@@ -202,6 +227,9 @@ void Plane::rotate(int _i) {
     rotate(_i);
   } else if (this->twrDestination->isOccupied()) {
     // Attente
+    cout << this->name << " is waiting to land to "
+         << this->twrDestination->getName() << endl;
+    mtx.unlock();
     rotate(0);
   }
   return;

@@ -51,7 +51,10 @@ CCR::CCR() {
  * @return  TWR     TWR of Departure for a plane
  */
 TWR *CCR::getDep() const {
-  int idx = aleat(0, (ListOfTWR.size() - 1));
+  int idx;
+  do {
+    idx = aleat(0, (ListOfTWR.size() - 1));
+  } while (ListOfTWR[idx]->getLimit() == ListOfTWR[idx]->getNumberOfPlanes());
   return ListOfTWR[idx];
 }
 
