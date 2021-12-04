@@ -4,6 +4,7 @@
 #include <cmath>
 #include <complex>
 #include <cstddef>
+#include <ctime>
 #include <iterator>
 #include <math.h>
 #include <mutex>
@@ -191,7 +192,7 @@ void Plane::navigate(CCR &ccr) {
   this->twrDep = this->twrDestination;
   this->traj = Trajectory(this->pos);
   // Define new destination
-  chrono::milliseconds tempt = (chrono::milliseconds)aleat(0, 2000);
+  chrono::seconds tempt = (chrono::seconds)aleat(3, 10);
   this_thread::sleep_for(tempt);
   this->setParameters(ccr);
   this->navigate(ccr);
@@ -270,4 +271,8 @@ ostream &operator<<(ostream &os, const Plane &p) {
   return os;
 }
 
-void threadPlane(Plane &p, CCR &ccr) { p.navigate(ccr); }
+void threadPlane(Plane &p, CCR &ccr) {
+  chrono::seconds tempt = (chrono::seconds)aleat(3, 10);
+  this_thread::sleep_for(tempt);
+  p.navigate(ccr);
+}
