@@ -18,7 +18,7 @@ void display(CCR &ccr, vector<Plane> &planes) {
   windowMap.setFramerateLimit(60);
 
   RenderWindow windowAirport(VideoMode(700, 500), "");
-  windowAirport.setPosition(Vector2i(0, 0));
+  windowAirport.setPosition(Vector2i(1100, 300));
   windowAirport.setVerticalSyncEnabled(true);
   windowAirport.setFramerateLimit(60);
   int count = 0;
@@ -61,6 +61,19 @@ void display(CCR &ccr, vector<Plane> &planes) {
         (float)windowMapSize.y / TextureMapSize.y; // Calculate scale.
     mapSprite.setScale(mapScaleX, mapScaleY);
     windowMap.draw(mapSprite);
+    // Circles
+    int colorThick = 50;
+    Color color(colorThick, colorThick, colorThick);
+    for (int i = 1; i < 10; i++) {
+      CircleShape c;
+      c.setRadius(100 * i);
+      c.setOutlineColor(color);
+      c.setFillColor(Color::Transparent);
+      c.setOutlineThickness(1);
+      c.setPosition((float)windowMap.getSize().x / 2 - c.getRadius(),
+                    (float)windowMap.getSize().y / 2 - c.getRadius());
+      windowMap.draw(c);
+    }
 
     // Background Airport
     Texture textureAirport;
@@ -77,19 +90,6 @@ void display(CCR &ccr, vector<Plane> &planes) {
     windowAirport.draw(airportSprite);
     windowAirport.display();
 
-    // Circles
-    int colorThick = 50;
-    Color color(colorThick, colorThick, colorThick);
-    for (int i = 1; i < 10; i++) {
-      CircleShape c;
-      c.setRadius(100 * i);
-      c.setOutlineColor(color);
-      c.setFillColor(Color::Transparent);
-      c.setOutlineThickness(1);
-      c.setPosition((float)windowMap.getSize().x / 2 - c.getRadius(),
-                    (float)windowMap.getSize().y / 2 - c.getRadius());
-      windowMap.draw(c);
-    }
     // Display TWRs
     ccr.display(windowMap);
 
