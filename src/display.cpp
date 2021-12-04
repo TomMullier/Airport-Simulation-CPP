@@ -17,8 +17,8 @@ void display(CCR &ccr, vector<Plane> &planes) {
   windowMap.setVerticalSyncEnabled(true);
   windowMap.setFramerateLimit(60);
 
-  RenderWindow windowAirport(VideoMode(700, 500), "");
-  windowAirport.setPosition(Vector2i(1100, 300));
+  RenderWindow windowAirport(VideoMode(1920-1362, 1920-1362), "");
+  windowAirport.setPosition(Vector2i(windowMap.getSize().x, 0));
   windowAirport.setVerticalSyncEnabled(true);
   windowAirport.setFramerateLimit(60);
   int count = 0;
