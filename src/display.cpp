@@ -67,13 +67,15 @@ void display(CCR &ccr, vector<Plane> &planes) {
     changeTexture(textureAirport, count, windowAirport);
     Sprite airportSprite(textureAirport);
     Vector2u TextureAirportSize =
-        textureAirport.getSize();                     // Get size of texture.
-    Vector2u windowAirportSize = windowAirport.getSize(); // Get size of windowAirport.
+        textureAirport.getSize(); // Get size of texture.
+    Vector2u windowAirportSize =
+        windowAirport.getSize(); // Get size of windowAirport.
     float airportScaleX = (float)windowAirportSize.x / TextureAirportSize.x;
     float airportScaleY =
         (float)windowAirportSize.y / TextureAirportSize.y; // Calculate scale.
     airportSprite.setScale(airportScaleX, airportScaleY);
     windowAirport.draw(airportSprite);
+    windowAirport.display();
 
     // Circles
     int colorThick = 50;
