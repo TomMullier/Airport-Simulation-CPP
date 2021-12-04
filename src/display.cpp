@@ -53,14 +53,14 @@ void display(CCR &ccr, vector<Plane> &planes) {
     // Background Map
     Texture textureMap;
     textureMap.loadFromFile("../files/map.jpg");
-    Sprite sprite(textureMap);
+    Sprite mapSprite(textureMap);
     Vector2u TextureMapSize = textureMap.getSize(); // Get size of texture.
     Vector2u windowMapSize = windowMap.getSize();   // Get size of windowMap.
     float mapScaleX = (float)windowMapSize.x / TextureMapSize.x;
     float mapScaleY =
         (float)windowMapSize.y / TextureMapSize.y; // Calculate scale.
-    sprite.setScale(mapScaleX, mapScaleY);
-    windowMap.draw(sprite);
+    mapSprite.setScale(mapScaleX, mapScaleY);
+    windowMap.draw(mapSprite);
 
     // Background Airport
     Texture textureAirport;

@@ -37,7 +37,6 @@ int main(int argc, char *argv[]) {
     Plane *p = new Plane(France);
     p->setParameters(France);
     planes.push_back(*p);
-    // cout << *p << endl;
   }
 
   // Threads

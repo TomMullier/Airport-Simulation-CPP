@@ -208,10 +208,6 @@ void Plane::navigate(CCR &ccr) {
  * @return  void
  */
 void Plane::rotate(int _i) {
-  // Condition :
-  // Nombre d'avion dans l'aeroport = limit
-  // Avion en train de décoler ou atterrir (state tour décollage ou atterissage)
-  // Avion peut décoller si tour libre sinon reste sur parking
   Point3D centerPoint = this->twrDestination->getPist();
   float numberOfIt = 200;
   float angleInRadians = (360 / numberOfIt) * (M_PI / 180);
