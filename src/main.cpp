@@ -16,20 +16,11 @@ using namespace std;
 using namespace sf;
 
 void display(CCR &ccr, vector<Plane> &planes);
-// void airportDisplay(RenderWindow &window, CCR &ccr, vector<Plane> &planes);
 
 int main(int argc, char *argv[]) {
   srand(time(NULL));
   // CCR
   CCR France;
-  // RenderWindow window(VideoMode(1362, 840), "Airport");
-  // window.setPosition(Vector2i(0,0));
-  // window.setVerticalSyncEnabled(true);
-  // window.setFramerateLimit(60);
-  // RenderWindow window_(VideoMode(1920-1362, 1920-1362), "Airport #2");
-  // window_.setPosition(Vector2i(window.getSize().x,0));
-  // window_.setVerticalSyncEnabled(true);
-  // window_.setFramerateLimit(60);
 
   // Plane
   vector<Plane> planes;
@@ -47,7 +38,6 @@ int main(int argc, char *argv[]) {
   }
 
   thread disp(display, ref(France), ref(planes));
-  // thread a_disp(airportDisplay, ref(window_), ref(France), ref(planes));
 
   vector<thread>::iterator itT = T.begin();
   while (itT != T.end()) {
@@ -56,7 +46,6 @@ int main(int argc, char *argv[]) {
     }
   }
   disp.join();
-  // a_disp.join();
 
   return EXIT_SUCCESS;
 }

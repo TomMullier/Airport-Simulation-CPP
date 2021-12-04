@@ -141,7 +141,9 @@ void Plane::navigate(CCR &ccr) {
   while (count < int(t.size()) - 1) {
     // Check if full or runway free
     if (this->pos == this->twrDestination->getArrival()) {
-      if (this->twrDestination->isOccupied() || this->twrDestination->getLimit()==this->twrDestination->getNumberOfPlanes()) {
+      if (this->twrDestination->isOccupied() ||
+          this->twrDestination->getLimit() ==
+              this->twrDestination->getNumberOfPlanes()) {
         // Attente
         mtx.lock();
         cout << this->name << " is waiting to land to "
@@ -226,7 +228,9 @@ void Plane::rotate(int _i) {
   if (_i != numberOfIt) {
     this_thread::sleep_for(INTERVAL);
     rotate(_i);
-  } else if (this->twrDestination->isOccupied() || this->twrDestination->getLimit()==this->twrDestination->getNumberOfPlanes()) {
+  } else if (this->twrDestination->isOccupied() ||
+             this->twrDestination->getLimit() ==
+                 this->twrDestination->getNumberOfPlanes()) {
     // Attente
     cout << this->name << " is waiting to land to "
          << this->twrDestination->getName() << "("
@@ -272,8 +276,4 @@ ostream &operator<<(ostream &os, const Plane &p) {
   return os;
 }
 
-void threadPlane(Plane &p, CCR &ccr) {
-  chrono::seconds tempt = (chrono::seconds)aleat(3, 10);
-  this_thread::sleep_for(tempt);
-  p.navigate(ccr);
-}
+void threadPlane(Plane &p, CCR &ccr) { p.navigate(ccr); }

@@ -45,6 +45,9 @@ CCR::CCR() {
   }
 }
 
+CCR::~CCR(){
+  delete [] &ListOfTWR;
+}
 /**
  * Choose a TWR of Departure
  *
