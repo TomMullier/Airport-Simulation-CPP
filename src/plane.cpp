@@ -42,7 +42,8 @@ Plane::Plane(CCR &ccr) {
   this->shape = _shape;
   // Display state
   mtx.lock();
-  cout << this->name << " generated at " << this->twrDep->getName() << endl;
+  cout << this->name << " generated at " << this->twrDep->getName() << "("
+       << this->twrDep->getTag() << ")" << endl;
   mtx.unlock();
 }
 
@@ -62,7 +63,8 @@ void Plane::setParameters(CCR &ccr) {
   this->setTraj(tmp);
   mtx.lock();
   cout << this->name << " set destination to "
-       << this->twrDestination->getName() << endl;
+       << this->twrDestination->getName() << "("
+       << this->twrDestination->getTag() << ")" << endl;
   mtx.unlock();
 }
 
@@ -131,7 +133,8 @@ void Plane::navigate(CCR &ccr) {
   };
   this->twrDep->setOccupied(true);
   mtx.lock();
-  cout << this->name << " take off from " << this->twrDep->getName() << endl;
+  cout << this->name << " take off from " << this->twrDep->getName() << "("
+       << this->twrDep->getTag() << ")" << endl;
   mtx.unlock();
 
   // Take off
@@ -142,7 +145,8 @@ void Plane::navigate(CCR &ccr) {
         // Attente
         mtx.lock();
         cout << this->name << " is waiting to land to "
-             << this->twrDestination->getName() << endl;
+             << this->twrDestination->getName() << "("
+             << this->twrDestination->getTag() << ")" << endl;
         mtx.unlock();
         rotate(0);
       }
@@ -152,7 +156,7 @@ void Plane::navigate(CCR &ccr) {
       this->twrDestination->setOccupied(true);
       mtx.lock();
       cout << this->name << " land to " << this->twrDestination->getName()
-           << endl;
+           << "(" << this->twrDestination->getTag() << ")" << endl;
       mtx.unlock();
     }
     // On libère la place de parking
@@ -184,8 +188,8 @@ void Plane::navigate(CCR &ccr) {
   }
   // Is arrived and set plane with new datas
   mtx.lock();
-  cout << this->name << " arrived to " << this->twrDestination->getName()
-       << endl;
+  cout << this->name << " arrived to " << this->twrDestination->getName() << "("
+       << this->twrDestination->getTag() << ")" << endl;
   mtx.unlock();
   this->twrDestination->setOccupied(false);
   this->speed = BASESPEED;
@@ -229,7 +233,8 @@ void Plane::rotate(int _i) {
   } else if (this->twrDestination->isOccupied()) {
     // Attente
     cout << this->name << " is waiting to land to "
-         << this->twrDestination->getName() << endl;
+         << this->twrDestination->getName() << "("
+         << this->twrDestination->getTag() << ")" << endl;
     mtx.unlock();
     rotate(0);
   }

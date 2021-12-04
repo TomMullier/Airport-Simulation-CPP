@@ -4,6 +4,7 @@
 class TWR {
 private:
   string name;
+  string tag;
   Point3D parking;
   Point3D pist;
   Point3D departure;
@@ -14,10 +15,12 @@ private:
 
 public:
   // Constructor
-  TWR(string _name = "", Point3D park = Point3D(), Point3D pi = Point3D(),
-      Point3D dep = Point3D(), Point3D arr = Point3D(), int limit = 0);
+  TWR(string _name = "", string _tag = "", Point3D park = Point3D(),
+      Point3D pi = Point3D(), Point3D dep = Point3D(), Point3D arr = Point3D(),
+      int limit = 0);
   // Setters & Getters
   string getName() const { return name; };
+  string getTag() const { return tag; };
   Point3D getParking() const { return parking; };
   Point3D getPist() const { return pist; };
   Point3D getDeparture() const { return departure; };

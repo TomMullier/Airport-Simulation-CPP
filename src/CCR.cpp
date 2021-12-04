@@ -27,7 +27,7 @@ CCR::CCR() {
     for (auto it = j.begin(); it != j.end(); ++it) {
       json temp;
       temp = *it;
-      TWR *t = new TWR(temp["name"],
+      TWR *t = new TWR(temp["name"], temp["tag"],
                        Point3D(temp["parking"]["x"], temp["parking"]["y"], 0),
                        Point3D(temp["pist"]["x"], temp["pist"]["y"], 0),
                        Point3D(temp["departure"]["x"], temp["departure"]["y"],
@@ -92,7 +92,7 @@ void CCR::display(RenderWindow &window) {
     window.draw(_shape);
     Text text;
     Font font;
-    text.setString((*it)->getName());
+    text.setString((*it)->getTag());
     font.loadFromFile("../files/arial.ttf");
     text.setFont(font);
     text.setCharacterSize(12);

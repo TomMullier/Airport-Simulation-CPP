@@ -12,9 +12,10 @@
  *
  * @return  TWR     TWR created and attributs set
  */
-TWR::TWR(string _name, Point3D park, Point3D pi, Point3D dep, Point3D arr,
+TWR::TWR(string _name, string _tag, Point3D park, Point3D pi, Point3D dep, Point3D arr,
          int limit) {
   name = _name;
+  tag = _tag;
   parking = park;
   pist = pi;
   arrival = arr;
