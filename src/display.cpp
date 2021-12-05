@@ -10,14 +10,20 @@
 
 using namespace std;
 using namespace sf;
+chrono::milliseconds INTERVAL2 = (chrono::milliseconds)17;
+
 
 void display(CCR &ccr, vector<Plane> &planes) {
-  RenderWindow windowMap(VideoMode(1362, 840), "CCR map");
+  ContextSettings settings;
+  settings.antialiasingLevel = 8;
+  RenderWindow windowMap(VideoMode(1362, 840), "CCR map", Style::Default,
+                         settings);
   windowMap.setPosition(Vector2i(0, 0));
   windowMap.setVerticalSyncEnabled(true);
   windowMap.setFramerateLimit(60);
 
-  RenderWindow windowAirport(VideoMode(1920-1362, 1920-1362), "");
+  RenderWindow windowAirport(VideoMode(1920 - 1362, 1920 - 1362), "",
+                             Style::Default, settings);
   windowAirport.setPosition(Vector2i(windowMap.getSize().x, 0));
   windowAirport.setVerticalSyncEnabled(true);
   windowAirport.setFramerateLimit(60);
@@ -99,7 +105,7 @@ void display(CCR &ccr, vector<Plane> &planes) {
       (*itPlane++).display(windowMap);
     }
     windowMap.display();
-    this_thread::sleep_for(16.6ms);
+    this_thread::sleep_for(INTERVAL2);
   }
 }
 

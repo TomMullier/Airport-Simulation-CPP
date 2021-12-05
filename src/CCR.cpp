@@ -1,6 +1,8 @@
 #include "../headers/CCR.hpp"
 
+#include <SFML/Graphics/RectangleShape.hpp>
 #include <SFML/Graphics/RenderWindow.hpp>
+#include <SFML/System/Vector2.hpp>
 #include <cstdlib>
 #include <fstream>
 #include <iostream>
@@ -81,7 +83,8 @@ TWR *CCR::getArr(TWR *&dep) const {
  */
 void CCR::display(RenderWindow &window) {
   vector<TWR *>::iterator it = ListOfTWR.begin();
-  CircleShape _shape(5.f);
+  Vector2f rectSize(10,10);
+  RectangleShape _shape(rectSize);
   _shape.setFillColor(Color::Red);
   while (it != ListOfTWR.end()) {
     _shape.setPosition((*it)->getPist().getX(), (*it)->getPist().getY());
