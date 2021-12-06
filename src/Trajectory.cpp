@@ -1,4 +1,4 @@
-#include "../headers/trajectory.hpp"
+#include "../headers/Trajectory.hpp"
 #include <cstdlib>
 #include <iostream>
 

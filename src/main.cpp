@@ -7,7 +7,7 @@
 #include <thread>
 #include <vector>
 
-#include "../headers/display.hpp"
+#include "../headers/Display.hpp"
 
 #define INTERVALLE 1
 #define NBPLANES 10
@@ -19,6 +19,8 @@ void display(CCR &ccr, vector<Plane> &planes);
 
 int main(int argc, char *argv[]) {
   srand(time(NULL));
+
+  
   // CCR
   CCR France;
 

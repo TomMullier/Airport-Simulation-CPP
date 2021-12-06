@@ -1,4 +1,4 @@
-#include "../headers/display.hpp"
+#include "../headers/Display.hpp"
 #include <SFML/Graphics/CircleShape.hpp>
 #include <SFML/Graphics/Color.hpp>
 #include <SFML/Graphics/RenderWindow.hpp>
@@ -11,7 +11,6 @@
 using namespace std;
 using namespace sf;
 chrono::milliseconds INTERVAL2 = (chrono::milliseconds)17;
-
 
 void display(CCR &ccr, vector<Plane> &planes) {
   ContextSettings settings;

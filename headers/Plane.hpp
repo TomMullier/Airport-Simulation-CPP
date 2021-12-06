@@ -12,7 +12,7 @@ private:
   TWR *twrDestination;
   Trajectory traj;
   float speed;
-  CircleShape shape;
+  Sprite shape;
 
 public:
   // Constructor
@@ -24,7 +24,7 @@ public:
   TWR *getDestination() const { return twrDestination; };
   Trajectory getTraj() const { return traj; };
   float getSpeed() const { return speed; };
-  CircleShape *getShape() { return &shape; };
+  Sprite *getShape() { return &shape; };
   void setPos(Point3D &newPos) { pos = newPos; };
   void setParameters(CCR &ccr);
   void setTraj(vector<Point3D> &newTraj);

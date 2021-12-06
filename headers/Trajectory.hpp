@@ -1,4 +1,4 @@
-#include "./point3D.hpp"
+#include "./Point3D.hpp"
 #include <cstddef>
 #include <vector>
 

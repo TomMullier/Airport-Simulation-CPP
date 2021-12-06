@@ -1,4 +1,4 @@
-#include "../headers/point3D.hpp"
+#include "../headers/Point3D.hpp"
 #include <cmath>
 #include <cstdlib>
 

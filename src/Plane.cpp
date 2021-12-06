@@ -1,4 +1,7 @@
-#include "../headers/plane.hpp"
+#include "../headers/Plane.hpp"
+#include <SFML/Graphics/BlendMode.hpp>
+#include <SFML/Graphics/RenderStates.hpp>
+#include <SFML/Graphics/RenderTexture.hpp>
 #include <bits/types/time_t.h>
 #include <chrono>
 #include <cmath>
@@ -36,12 +39,19 @@ Plane::Plane(CCR &ccr) {
   this->twrDestination = this->twrDep;
   traj = Trajectory(this->pos);
   speed = BASESPEED;
-  // DISPLAY
-  CircleShape _shape(5.f);
-  _shape.setFillColor(Color::Green);
-  _shape.setPosition(pos.getX(), pos.getY());
-  this->shape = _shape;
-  // Display state
+
+  // Image Plane
+  Image image;
+  Texture texturePlane;
+  image.loadFromFile("../files/Plane.png");
+  texturePlane.loadFromImage(image);
+  texturePlane.setSmooth(false);
+  Sprite PlaneSprite(texturePlane);
+  PlaneSprite.setScale(0.2,0.2);
+  PlaneSprite.setPosition(pos.getX(), pos.getY());
+  this->shape=PlaneSprite;
+
+  
   mtx.lock();
   cout << this->name << " generated at " << this->twrDep->getName() << "("
        << this->twrDep->getTag() << ")" << endl;

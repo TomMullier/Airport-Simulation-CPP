@@ -1,4 +1,4 @@
-#include "./trajectory.hpp"
+#include "./Trajectory.hpp"
 #include <string>
 
 class TWR {
