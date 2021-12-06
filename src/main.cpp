@@ -19,15 +19,21 @@ void display(CCR &ccr, vector<Plane> &planes);
 
 int main(int argc, char *argv[]) {
   srand(time(NULL));
-
-  
   // CCR
   CCR France;
+
+   // Image Plane
+  Image image;
+  Texture texturePlane;
+  image.loadFromFile("../files/Plane.png");
+  texturePlane.loadFromImage(image);
+  texturePlane.setSmooth(false);
+ 
 
   // Plane
   vector<Plane> planes;
   for (int i = 0; i < NBPLANES; i++) {
-    Plane *p = new Plane(France);
+    Plane *p = new Plane(France, texturePlane);
     p->setParameters(France);
     planes.push_back(*p);
   }

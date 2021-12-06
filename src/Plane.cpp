@@ -2,6 +2,7 @@
 #include <SFML/Graphics/BlendMode.hpp>
 #include <SFML/Graphics/RenderStates.hpp>
 #include <SFML/Graphics/RenderTexture.hpp>
+#include <SFML/Graphics/Texture.hpp>
 #include <bits/types/time_t.h>
 #include <chrono>
 #include <cmath>
@@ -29,7 +30,7 @@ std::mutex mtx;
  *
  * @return  Plane   Plane created and attributs set
  */
-Plane::Plane(CCR &ccr) {
+Plane::Plane(CCR &ccr, sf::Texture &texture) : shape(texture) {
   name = "F-";
   for (size_t i = 0; i < 4; i++)
     name += aleat(90, 65);
@@ -39,19 +40,9 @@ Plane::Plane(CCR &ccr) {
   this->twrDestination = this->twrDep;
   traj = Trajectory(this->pos);
   speed = BASESPEED;
-
-  // Image Plane
-  Image image;
-  Texture texturePlane;
-  image.loadFromFile("../files/Plane.png");
-  texturePlane.loadFromImage(image);
-  texturePlane.setSmooth(false);
-  Sprite PlaneSprite(texturePlane);
-  PlaneSprite.setScale(0.2,0.2);
-  PlaneSprite.setPosition(pos.getX(), pos.getY());
-  this->shape=PlaneSprite;
-
-  
+  this->shape.setScale(0.03, 0.03);
+  this ->shape.setPosition(pos.getX(), pos.getY());
+  *this->phi=0;
   mtx.lock();
   cout << this->name << " generated at " << this->twrDep->getName() << "("
        << this->twrDep->getTag() << ")" << endl;
@@ -108,20 +99,20 @@ Point3D Plane::nextPos(int &count) {
   Point3D first = list[count];
   Point3D last = list[count + 1];
   Point3D C(last.getX(), last.getY(), first.getZ());
-  float phi = atan((C.getY() - first.getY()) / (C.getX() - first.getX()));
+  *this->phi = atan((C.getY() - first.getY()) / (C.getX() - first.getX()));
   float teta = acos((last.getZ() - first.getZ()) / first.distanceTo(last));
   if (tmp.getX() < last.getX()) {
-    tmp.setX(tmp.getX() + r * sin(teta) * cos(phi));
+    tmp.setX(tmp.getX() + r * sin(teta) * cos(*phi));
     if (tmp.getY() < last.getY() || tmp.getY() > last.getY()) {
-      tmp.setY(tmp.getY() + r * sin(teta) * sin(phi));
+      tmp.setY(tmp.getY() + r * sin(teta) * sin(*phi));
     }
   } else if (tmp.getX() > last.getX()) {
-    tmp.setX(tmp.getX() - r * sin(teta) * cos(phi));
+    tmp.setX(tmp.getX() - r * sin(teta) * cos(*phi));
     if (tmp.getY() < last.getY() || tmp.getY() > last.getY()) {
-      tmp.setY(tmp.getY() - r * sin(teta) * sin(phi));
+      tmp.setY(tmp.getY() - r * sin(teta) * sin(*phi));
     }
   } else if (tmp.getY() < last.getY() || tmp.getY() > last.getY()) {
-    tmp.setY(tmp.getY() + r * sin(teta) * sin(phi));
+    tmp.setY(tmp.getY() + r * sin(teta) * sin(*phi));
   }
   if (tmp.getZ() < last.getZ() || tmp.getZ() > last.getZ()) {
     tmp.setZ(tmp.getZ() + r * cos(teta));
@@ -258,7 +249,8 @@ void Plane::rotate(int _i) {
  * @return  void
  */
 void Plane::display(sf::RenderWindow &window) {
-  this->getShape()->setPosition(this->getPos().getX(), this->getPos().getY());
+  this->getShape()->setPosition(this->getPos().getX()-3, this->getPos().getY()-3);
+  this->getShape()->setRotation(*this->phi);
   window.draw((*(*this).getShape()));
   Text text;
   Font font;

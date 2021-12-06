@@ -13,10 +13,11 @@ private:
   Trajectory traj;
   float speed;
   Sprite shape;
+  float *phi;
 
 public:
   // Constructor
-  Plane(CCR &ccr);
+  Plane(CCR &ccr, sf::Texture &texture);
   // Setters & Getters
   string getName() const { return name; };
   Point3D getPos() const { return pos; };
