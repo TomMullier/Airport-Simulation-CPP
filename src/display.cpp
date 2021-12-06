@@ -158,7 +158,7 @@ Texture changeTexture(Texture &texture, int &count, RenderWindow &window) {
   }
   case 10: {
     texture.loadFromFile("../files/Valenciennes.png");
-    window.setTitle("Valanciennes (LFAV) airport");
+    window.setTitle("Valenciennes (LFAV) airport");
     break;
   }
   case 11: {

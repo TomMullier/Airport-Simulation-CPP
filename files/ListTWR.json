@@ -43,7 +43,7 @@
       "y": 140,
       "z": 20
     },
-    "limit": 1
+    "limit": 2
   },
   "Cambrai": {
     "name": "Cambrai",
@@ -112,7 +112,7 @@
       "y": 369,
       "z": 20
     },
-    "limit": 1
+    "limit": 5
   },
   "Maubeuge": {
     "name": "Maubeuge",
@@ -158,7 +158,7 @@
       "y": 351,
       "z": 20
     },
-    "limit": 1
+    "limit": 3
   },
   "St Omer": {
     "name": "Saint Omer",
@@ -204,9 +204,9 @@
       "y": 448,
       "z": 20
     },
-    "limit": 1
+    "limit": 3
   },
-  "Valanciennes": {
+  "Valenciennes": {
     "name": "Valenciennes",
     "tag": "LFAV",
     "parking": {
@@ -227,7 +227,7 @@
       "y": 553,
       "z": 20
     },
-    "limit": 1
+    "limit": 2
   },
   "Vitry en Artois": {
     "name": "Vitry en Artois",

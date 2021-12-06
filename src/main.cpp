@@ -10,7 +10,7 @@
 #include "../headers/display.hpp"
 
 #define INTERVALLE 1
-#define NBPLANES 6
+#define NBPLANES 10
 
 using namespace std;
 using namespace sf;
