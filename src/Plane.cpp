@@ -198,11 +198,13 @@ void Plane::navigate(CCR &ccr) {
 
     // Between 2 points of traj
     while (dist1 > dist2) {
-      if (count >= 2 && count <= 3 && !this->emergency) {
+      if (count >= 2 && count <= 3 && this->emergency == false) {
         this->emergency = randEmergency();
         cout << emergency << endl;
-        if (emergency) {
+        if (this->emergency == true) {
+          cout << traj << endl;
           instructionEmergency(ccr);
+          cout << traj << endl;
         }
       }
       this->speed = SPEED * nxt.getZ() / 200 + BASESPEED;
@@ -328,7 +330,7 @@ bool randEmergency() {
 void Plane::instructionEmergency(CCR &ccr) {
   vector<TWR *> vect = ccr.getList();
   vector<TWR *>::iterator it = vect.begin();
-  TWR *tmpTWR = *it;
+  TWR tmpTWR = **it;
   Point3D tmpPoint = (*it++)->getArrival();
   float dist = this->pos.distanceTo(tmpPoint);
 
@@ -338,13 +340,14 @@ void Plane::instructionEmergency(CCR &ccr) {
     if (dist < this->pos.distanceTo(tmpPoint)) {
       dist = this->pos.distanceTo(tmpPoint);
     }
-    tmpTWR = *it++;
+    tmpTWR = **it;
+    it++;
   }
 
   this->traj.popList(3);
-  this->traj.setList(tmpTWR->getArrival());
-  this->traj.setList(tmpTWR->getPist());
-  this->traj.setList(tmpTWR->getParking());
+  this->traj.setList(tmpTWR.getArrival());
+  this->traj.setList(tmpTWR.getPist());
+  this->traj.setList(tmpTWR.getParking());
 }
 
 void threadPlane(Plane &p, CCR &ccr) { p.navigate(ccr); }
