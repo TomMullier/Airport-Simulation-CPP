@@ -44,7 +44,8 @@ Plane::Plane(CCR &ccr, sf::Texture &texture) : shape(texture) {
                         shape.getTexture()->getSize().y / 2.f);
   this->shape.setScale(0.03, 0.03);
   this->shape.setPosition(pos.getX(), pos.getY());
-  this->rot = -90;
+  this->rot = 90;
+
   mtx.lock();
   cout << this->name << " generated at " << this->twrDep->getName() << "("
        << this->twrDep->getTag() << ")" << endl;
@@ -256,7 +257,6 @@ void Plane::rotate(int _i) {
 void Plane::display(sf::RenderWindow &window) {
   this->getShape()->setPosition(this->getPos().getX() + 4,
                                 this->getPos().getY() + 4);
-  // this->rot=(this->phi*180/M_PI)+180;
   this->getShape()->setRotation(rot);
   window.draw((*(*this).getShape()));
   Text text;
