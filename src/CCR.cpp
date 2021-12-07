@@ -15,6 +15,12 @@
 using nlohmann::json;
 using namespace sf;
 
+#define PARK_COLOR Red
+#define DEP_COLOR Red
+#define ARR_COLOR Red
+#define PIST_COLOR Red
+
+
 /**
  * Constructor of CCR
  *
@@ -47,9 +53,7 @@ CCR::CCR() {
   }
 }
 
-CCR::~CCR(){
-  delete [] &ListOfTWR;
-}
+CCR::~CCR() { delete[] & ListOfTWR; }
 /**
  * Choose a TWR of Departure
  *
@@ -83,18 +87,21 @@ TWR *CCR::getArr(TWR *&dep) const {
  */
 void CCR::display(RenderWindow &window) {
   vector<TWR *>::iterator it = ListOfTWR.begin();
-  Vector2f rectSize(10,10);
+  Vector2f rectSize(10, 10);
   RectangleShape _shape(rectSize);
-  _shape.setFillColor(Color::Red);
   while (it != ListOfTWR.end()) {
     _shape.setPosition((*it)->getPist().getX(), (*it)->getPist().getY());
+    _shape.setFillColor(Color::PIST_COLOR);
     window.draw(_shape);
     _shape.setPosition((*it)->getParking().getX(), (*it)->getParking().getY());
+    _shape.setFillColor(Color::PARK_COLOR);
     window.draw(_shape);
     _shape.setPosition((*it)->getDeparture().getX(),
                        (*it)->getDeparture().getY());
+    _shape.setFillColor(Color::DEP_COLOR);
     window.draw(_shape);
     _shape.setPosition((*it)->getArrival().getX(), (*it)->getArrival().getY());
+    _shape.setFillColor(Color::ARR_COLOR);
     window.draw(_shape);
     Text text;
     Font font;

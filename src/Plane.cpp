@@ -12,9 +12,9 @@
 #include <iterator>
 #include <math.h>
 #include <mutex>
+#include <string>
 #include <thread>
 #include <vector>
-#include <string>
 
 using namespace std;
 using namespace sf;
@@ -23,6 +23,7 @@ using namespace sf;
 #define BASESPEED 0.05
 
 #define TEXT
+#define EMERGENCY Red
 
 chrono::milliseconds INTERVAL = (chrono::milliseconds)17;
 
@@ -48,6 +49,7 @@ Plane::Plane(CCR &ccr, sf::Texture &texture) : shape(texture) {
   this->shape.setScale(0.03, 0.03);
   this->shape.setPosition(pos.getX(), pos.getY());
   this->rot = 90;
+  this->emergency = false;
 
 #ifdef TEXT
   mtx.lock();
@@ -196,6 +198,12 @@ void Plane::navigate(CCR &ccr) {
 
     // Between 2 points of traj
     while (dist1 > dist2) {
+      if (count >= 2 && count <= 3) {
+        this->emergency = randEmergency();
+        if (emergency) {
+          instructionEmergency(ccr);
+        }
+      }
       this->speed = SPEED * nxt.getZ() / 200 + BASESPEED;
       pos = nxt;
       dist1 = this->pos.distanceTo(t[count + 1]);
@@ -279,13 +287,15 @@ void Plane::display(sf::RenderWindow &window) {
   window.draw((*(*this).getShape()));
   Text text;
   Font font;
-  string str=this->getName()+"\nAlt. : "+to_string(this->getPos().getZ());
+  string str = this->getName() + "\nAlt. : " + to_string(this->getPos().getZ());
   text.setString(str);
   font.loadFromFile("../files/arial.ttf");
   text.setFont(font);
   text.setCharacterSize(12);
   Color clr(190, 190, 190); // in pixels, not points!
   text.setFillColor(clr);
+  if (this->emergency == true)
+    text.setFillColor(Color::EMERGENCY);
   text.setStyle(Text::Bold);
   text.setPosition(this->getPos().getX() + 10, this->getPos().getY() + 10);
   window.draw(text);
@@ -304,6 +314,36 @@ ostream &operator<<(ostream &os, const Plane &p) {
   os << "Trajectory : " << endl << p.getTraj() << endl;
   os << "Speed : " << p.getSpeed() << endl;
   return os;
+}
+
+bool randEmergency() {
+  int x = aleat(0, 100);
+  if (x == 0) return true;
+  else return false;
+}
+
+void Plane::instructionEmergency(CCR &ccr) {
+  this->traj = Trajectory(this->pos);
+  float dist = 10000000000;
+  TWR *tempTWR;
+  vector<TWR *> vect = ccr.getList();
+  vector<TWR *>::iterator it = vect.begin();
+  while (it != vect.end()) {
+    Point3D tmmm = (*it)->getArrival();
+    float temp = pos.distanceTo(tmmm);
+    if (temp < dist) {
+      dist = temp;
+      tempTWR = *it;
+      (*it++);
+    }
+  }
+  vector<Point3D> trajTemp;
+  trajTemp.push_back(this->pos);
+  trajTemp.push_back(tempTWR->getArrival());
+  trajTemp.push_back(tempTWR->getPist());
+  trajTemp.push_back(tempTWR->getParking());
+      cout<<"zpekufha"<<endl;
+  setTraj(trajTemp);
 }
 
 void threadPlane(Plane &p, CCR &ccr) { p.navigate(ccr); }
