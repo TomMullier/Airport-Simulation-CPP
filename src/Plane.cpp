@@ -14,12 +14,15 @@
 #include <mutex>
 #include <thread>
 #include <vector>
+#include <string>
 
 using namespace std;
 using namespace sf;
 
 #define SPEED 10
 #define BASESPEED 0.05
+
+#define TEXT
 
 chrono::milliseconds INTERVAL = (chrono::milliseconds)17;
 
@@ -46,10 +49,12 @@ Plane::Plane(CCR &ccr, sf::Texture &texture) : shape(texture) {
   this->shape.setPosition(pos.getX(), pos.getY());
   this->rot = 90;
 
+#ifdef TEXT
   mtx.lock();
   cout << this->name << " generated at " << this->twrDep->getName() << "("
        << this->twrDep->getTag() << ")" << endl;
   mtx.unlock();
+#endif
 }
 
 /**
@@ -66,11 +71,13 @@ void Plane::setParameters(CCR &ccr) {
   tmp.push_back(twrDestination->getPist());
   tmp.push_back(twrDestination->getParking());
   this->setTraj(tmp);
+#ifdef TEXT
   mtx.lock();
   cout << this->name << " set destination to "
        << this->twrDestination->getName() << "("
        << this->twrDestination->getTag() << ")" << endl;
   mtx.unlock();
+#endif
 }
 
 /**
@@ -140,10 +147,12 @@ void Plane::navigate(CCR &ccr) {
     this_thread::sleep_for(1000ms);
   };
   this->twrDep->setOccupied(true);
+#ifdef TEXT
   mtx.lock();
   cout << this->name << " take off from " << this->twrDep->getName() << "("
        << this->twrDep->getTag() << ")" << endl;
   mtx.unlock();
+#endif
 
   // Take off
   while (count < int(t.size()) - 1) {
@@ -152,22 +161,26 @@ void Plane::navigate(CCR &ccr) {
       if (this->twrDestination->isOccupied() ||
           this->twrDestination->getLimit() ==
               this->twrDestination->getNumberOfPlanes()) {
-        // Attente
+// Attente
+#ifdef TEXT
         mtx.lock();
         cout << this->name << " is waiting to land to "
              << this->twrDestination->getName() << "("
              << this->twrDestination->getTag() << ")" << endl;
         mtx.unlock();
+#endif
         rotate(0);
       }
       this->pos = this->twrDestination->getArrival();
       // Landing
       this->twrDestination->setNumberOfPlanes(1);
       this->twrDestination->setOccupied(true);
+#ifdef TEXT
       mtx.lock();
       cout << this->name << " land to " << this->twrDestination->getName()
            << "(" << this->twrDestination->getTag() << ")" << endl;
       mtx.unlock();
+#endif
     }
     // On libère la place de parking
     if (this->pos == this->getDep()->getDeparture()) {
@@ -196,11 +209,13 @@ void Plane::navigate(CCR &ccr) {
     this_thread::sleep_for(INTERVAL);
     count++;
   }
-  // Is arrived and set plane with new datas
+// Is arrived and set plane with new datas
+#ifdef TEXT
   mtx.lock();
   cout << this->name << " arrived to " << this->twrDestination->getName() << "("
        << this->twrDestination->getTag() << ")" << endl;
   mtx.unlock();
+#endif
   this->twrDestination->setOccupied(false);
   this->speed = BASESPEED;
   this->twrDep = this->twrDestination;
@@ -223,7 +238,7 @@ void Plane::rotate(int _i) {
   float angleInRadians = (360 / numberOfIt) * (M_PI / 180);
   float cosTheta = cos(angleInRadians);
   float sinTheta = sin(angleInRadians);
-  rot=(angleInRadians*_i+M_PI/2)*180/M_PI;
+  rot = (angleInRadians * _i + M_PI / 2) * 180 / M_PI;
   Point3D pointToRotate = this->pos;
   float X = (cosTheta * (pointToRotate.getX() - centerPoint.getX()) -
              sinTheta * (pointToRotate.getY() - centerPoint.getY()) +
@@ -241,10 +256,13 @@ void Plane::rotate(int _i) {
              this->twrDestination->getLimit() ==
                  this->twrDestination->getNumberOfPlanes()) {
     // Attente
+#ifdef TEXT
+    mtx.lock();
     cout << this->name << " is waiting to land to "
          << this->twrDestination->getName() << "("
          << this->twrDestination->getTag() << ")" << endl;
     mtx.unlock();
+#endif
     rotate(0);
   }
 }
@@ -261,11 +279,13 @@ void Plane::display(sf::RenderWindow &window) {
   window.draw((*(*this).getShape()));
   Text text;
   Font font;
-  text.setString(this->getName());
+  string str=this->getName()+"\nAlt. : "+to_string(this->getPos().getZ());
+  text.setString(str);
   font.loadFromFile("../files/arial.ttf");
   text.setFont(font);
-  text.setCharacterSize(12); // in pixels, not points!
-  text.setFillColor(sf::Color::Blue);
+  text.setCharacterSize(12);
+  Color clr(190, 190, 190); // in pixels, not points!
+  text.setFillColor(clr);
   text.setStyle(Text::Bold);
   text.setPosition(this->getPos().getX() + 10, this->getPos().getY() + 10);
   window.draw(text);
