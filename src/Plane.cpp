@@ -144,7 +144,7 @@ void Plane::navigate(CCR &ccr) {
   // Init
   int count = 0;
   vector<Point3D> t = this->getTraj().getList();
-  // Chek take off possible
+  // Check take off possible
   while (this->twrDep->isOccupied() == true) {
     this_thread::sleep_for(1000ms);
   };
@@ -198,8 +198,9 @@ void Plane::navigate(CCR &ccr) {
 
     // Between 2 points of traj
     while (dist1 > dist2) {
-      if (count >= 2 && count <= 3) {
+      if (count >= 2 && count <= 3 && !this->emergency) {
         this->emergency = randEmergency();
+        cout << emergency << endl;
         if (emergency) {
           instructionEmergency(ccr);
         }
@@ -318,32 +319,32 @@ ostream &operator<<(ostream &os, const Plane &p) {
 
 bool randEmergency() {
   int x = aleat(0, 100);
-  if (x == 0) return true;
-  else return false;
+  if (x == 0)
+    return true;
+  else
+    return false;
 }
 
 void Plane::instructionEmergency(CCR &ccr) {
-  this->traj = Trajectory(this->pos);
-  float dist = 10000000000;
-  TWR *tempTWR;
   vector<TWR *> vect = ccr.getList();
   vector<TWR *>::iterator it = vect.begin();
+  TWR *tmpTWR = *it;
+  Point3D tmpPoint = (*it++)->getArrival();
+  float dist = this->pos.distanceTo(tmpPoint);
+
   while (it != vect.end()) {
-    Point3D tmmm = (*it)->getArrival();
-    float temp = pos.distanceTo(tmmm);
-    if (temp < dist) {
-      dist = temp;
-      tempTWR = *it;
-      (*it++);
+    cout << "ok";
+    tmpPoint = (*it)->getArrival();
+    if (dist < this->pos.distanceTo(tmpPoint)) {
+      dist = this->pos.distanceTo(tmpPoint);
     }
+    tmpTWR = *it++;
   }
-  vector<Point3D> trajTemp;
-  trajTemp.push_back(this->pos);
-  trajTemp.push_back(tempTWR->getArrival());
-  trajTemp.push_back(tempTWR->getPist());
-  trajTemp.push_back(tempTWR->getParking());
-      cout<<"zpekufha"<<endl;
-  setTraj(trajTemp);
+
+  this->traj.popList(3);
+  this->traj.setList(tmpTWR->getArrival());
+  this->traj.setList(tmpTWR->getPist());
+  this->traj.setList(tmpTWR->getParking());
 }
 
 void threadPlane(Plane &p, CCR &ccr) { p.navigate(ccr); }

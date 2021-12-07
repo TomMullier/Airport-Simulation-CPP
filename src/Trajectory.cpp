@@ -19,9 +19,23 @@ Trajectory::Trajectory(Point3D pos) {
  *
  * @return  void
  */
-void Trajectory::setList(Point3D &p) {
+void Trajectory::setList(Point3D const &p) {
   listOfPoints.push_back(p);
   numberOfPoints++;
+}
+
+/**
+ * Delete last point of list
+ *
+ * @param   int   nbPoints  Number of points to delete
+ *
+ * @return  void            
+ */
+void Trajectory::popList(int nbPoints) {
+  for (int i; i < nbPoints; i++) {
+    listOfPoints.pop_back();
+    numberOfPoints--;
+  }
 }
 
 /**
