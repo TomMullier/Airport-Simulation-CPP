@@ -40,9 +40,11 @@ Plane::Plane(CCR &ccr, sf::Texture &texture) : shape(texture) {
   this->twrDestination = this->twrDep;
   traj = Trajectory(this->pos);
   speed = BASESPEED;
+  this->shape.setOrigin(shape.getTexture()->getSize().x / 2.f,
+                        shape.getTexture()->getSize().y / 2.f);
   this->shape.setScale(0.03, 0.03);
-  this ->shape.setPosition(pos.getX(), pos.getY());
-  *this->phi=0;
+  this->shape.setPosition(pos.getX(), pos.getY());
+  this->rot = -90;
   mtx.lock();
   cout << this->name << " generated at " << this->twrDep->getName() << "("
        << this->twrDep->getTag() << ")" << endl;
@@ -99,20 +101,23 @@ Point3D Plane::nextPos(int &count) {
   Point3D first = list[count];
   Point3D last = list[count + 1];
   Point3D C(last.getX(), last.getY(), first.getZ());
-  *this->phi = atan((C.getY() - first.getY()) / (C.getX() - first.getX()));
+  float phi = atan((C.getY() - first.getY()) / (C.getX() - first.getX()));
   float teta = acos((last.getZ() - first.getZ()) / first.distanceTo(last));
   if (tmp.getX() < last.getX()) {
-    tmp.setX(tmp.getX() + r * sin(teta) * cos(*phi));
+    tmp.setX(tmp.getX() + r * sin(teta) * cos(phi));
     if (tmp.getY() < last.getY() || tmp.getY() > last.getY()) {
-      tmp.setY(tmp.getY() + r * sin(teta) * sin(*phi));
+      tmp.setY(tmp.getY() + r * sin(teta) * sin(phi));
     }
+    rot = phi * 180 / M_PI;
   } else if (tmp.getX() > last.getX()) {
-    tmp.setX(tmp.getX() - r * sin(teta) * cos(*phi));
+    tmp.setX(tmp.getX() - r * sin(teta) * cos(phi));
     if (tmp.getY() < last.getY() || tmp.getY() > last.getY()) {
-      tmp.setY(tmp.getY() - r * sin(teta) * sin(*phi));
+      tmp.setY(tmp.getY() - r * sin(teta) * sin(phi));
     }
+    rot = (phi + M_PI) * 180 / M_PI;
   } else if (tmp.getY() < last.getY() || tmp.getY() > last.getY()) {
-    tmp.setY(tmp.getY() + r * sin(teta) * sin(*phi));
+    tmp.setY(tmp.getY() + r * sin(teta) * sin(phi));
+    rot = (phi)*180 / M_PI;
   }
   if (tmp.getZ() < last.getZ() || tmp.getZ() > last.getZ()) {
     tmp.setZ(tmp.getZ() + r * cos(teta));
@@ -217,6 +222,7 @@ void Plane::rotate(int _i) {
   float angleInRadians = (360 / numberOfIt) * (M_PI / 180);
   float cosTheta = cos(angleInRadians);
   float sinTheta = sin(angleInRadians);
+  rot=(angleInRadians*_i+M_PI/2)*180/M_PI;
   Point3D pointToRotate = this->pos;
   float X = (cosTheta * (pointToRotate.getX() - centerPoint.getX()) -
              sinTheta * (pointToRotate.getY() - centerPoint.getY()) +
@@ -240,7 +246,6 @@ void Plane::rotate(int _i) {
     mtx.unlock();
     rotate(0);
   }
-  return;
 }
 
 /**
@@ -249,8 +254,10 @@ void Plane::rotate(int _i) {
  * @return  void
  */
 void Plane::display(sf::RenderWindow &window) {
-  this->getShape()->setPosition(this->getPos().getX()-3, this->getPos().getY()-3);
-  this->getShape()->setRotation(*this->phi);
+  this->getShape()->setPosition(this->getPos().getX() + 4,
+                                this->getPos().getY() + 4);
+  // this->rot=(this->phi*180/M_PI)+180;
+  this->getShape()->setRotation(rot);
   window.draw((*(*this).getShape()));
   Text text;
   Font font;

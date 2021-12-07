@@ -13,7 +13,7 @@ private:
   Trajectory traj;
   float speed;
   Sprite shape;
-  float *phi;
+  float rot;
 
 public:
   // Constructor
