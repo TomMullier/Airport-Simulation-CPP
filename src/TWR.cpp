@@ -23,6 +23,7 @@ TWR::TWR(string _name, string _tag, Point3D park, Point3D pi, Point3D dep, Point
   this->limit = limit;
   occupied = false;
   numberOfPlanes = 0;
+  emergency =false;
 }
 
 /**

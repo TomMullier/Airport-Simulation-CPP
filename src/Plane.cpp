@@ -163,16 +163,24 @@ void Plane::navigate(CCR &ccr) {
       if (this->twrDestination->isOccupied() ||
           this->twrDestination->getLimit() ==
               this->twrDestination->getNumberOfPlanes()) {
+        if (this->emergency == true &&
+            this->getDestination()->getEmergency() == true) {
+          goto LAND;
+        } else {
+
 // Attente
 #ifdef TEXT
-        mtx.lock();
-        cout << this->name << " is waiting to land to "
-             << this->twrDestination->getName() << "("
-             << this->twrDestination->getTag() << ")" << endl;
-        mtx.unlock();
+          mtx.lock();
+          cout << this->name << " is waiting to land to "
+               << this->twrDestination->getName() << "("
+               << this->twrDestination->getTag() << ")" << endl;
+          mtx.unlock();
 #endif
-        rotate(0);
+          rotate(0);
+        }
       }
+
+    LAND:
       this->pos = this->twrDestination->getArrival();
       // Landing
       this->twrDestination->setNumberOfPlanes(1);
@@ -188,6 +196,8 @@ void Plane::navigate(CCR &ccr) {
     if (this->pos == this->getDep()->getDeparture()) {
       this->twrDep->setNumberOfPlanes(-1);
       this->twrDep->setOccupied(false);
+      if (this->getDep()->getEmergency() == true)
+        this->twrDep->setOccupied(true);
     }
 
     // Navigation
@@ -210,8 +220,12 @@ void Plane::navigate(CCR &ccr) {
           mtx.unlock();
         }
       }
+      if(this->emergency==true) {
+        cout<<dist1<<endl;
+        cout<<dist2<<endl;
+      }
       this->speed = SPEED * nxt.getZ() / 200 + BASESPEED;
-      pos = nxt;
+      this->pos = nxt;
       dist1 = this->pos.distanceTo(t[count + 1]);
       nxt = this->nextPos(count);
       dist2 = this->pos.distanceTo(nxt);
@@ -219,7 +233,6 @@ void Plane::navigate(CCR &ccr) {
     }
     // Change pos
     this->pos = t[count + 1];
-
     this_thread::sleep_for(INTERVAL);
     count++;
   }
@@ -231,6 +244,7 @@ void Plane::navigate(CCR &ccr) {
   mtx.unlock();
 #endif
   this->twrDestination->setOccupied(false);
+  this->twrDestination->setEmergency(false);
   this->speed = BASESPEED;
   this->twrDep = this->twrDestination;
   this->traj = Trajectory(this->pos);
@@ -323,7 +337,7 @@ ostream &operator<<(ostream &os, const Plane &p) {
 }
 
 bool randEmergency() {
-  int x = aleat(0, 100);
+  int x = aleat(0, 1000);
   if (x == 0)
     return true;
   else
@@ -346,6 +360,8 @@ void Plane::instructionEmergency(CCR &ccr) {
     it++;
   }
   this->twrDestination = tmpTWR;
+  this->twrDestination->setEmergency(true);
+  this->twrDestination->setOccupied(true);
   this->traj.popList(4);
   this->traj.setList(this->pos);
   this->traj.setList(tmpTWR->getArrival());
