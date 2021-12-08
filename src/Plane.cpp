@@ -107,7 +107,7 @@ Point3D Plane::nextPos(int &count) {
   float r = speed;
   Point3D tmp(this->getPos().getX(), this->getPos().getY(),
               this->getPos().getZ());
-  vector<Point3D> list = traj.getList();
+  vector<Point3D> list = this->traj.getList();
   Point3D first = list[count];
   Point3D last = list[count + 1];
   Point3D C(last.getX(), last.getY(), first.getZ());
@@ -200,12 +200,14 @@ void Plane::navigate(CCR &ccr) {
     while (dist1 > dist2) {
       if (count >= 2 && count <= 3 && this->emergency == false) {
         this->emergency = randEmergency();
-        cout << emergency << endl;
         if (this->emergency == true) {
-          cout << traj << endl;
           instructionEmergency(ccr);
-          cout << traj << endl;
-          t = this->traj.getList();
+          t = this->getTraj().getList();
+          mtx.lock();
+          cout << this->getName() << " has a failure, landing in emergency in "
+               << this->twrDestination->getName() << "("
+               << this->twrDestination->getTag() << ")" << endl;
+          mtx.unlock();
         }
       }
       this->speed = SPEED * nxt.getZ() / 200 + BASESPEED;
@@ -233,8 +235,8 @@ void Plane::navigate(CCR &ccr) {
   this->twrDep = this->twrDestination;
   this->traj = Trajectory(this->pos);
   // Define new destination
+  this->emergency = false;
   chrono::seconds tempt = (chrono::seconds)aleat(3, 10);
-  this_thread::sleep_for(tempt);
   this->setParameters(ccr);
   this->navigate(ccr);
 }
@@ -313,8 +315,8 @@ void Plane::display(sf::RenderWindow &window) {
 ostream &operator<<(ostream &os, const Plane &p) {
   os << "Name : " << p.getName() << endl << endl;
   os << "Position : " << p.getPos() << endl;
-  os << "TWR Departure : " << endl << p.getDep() << endl;
-  os << "Destination : " << endl << p.getDestination() << endl;
+  os << "TWR Departure : " << endl << *p.getDep() << endl;
+  os << "Destination : " << endl << *p.getDestination() << endl;
   os << "Trajectory : " << endl << p.getTraj() << endl;
   os << "Speed : " << p.getSpeed() << endl;
   return os;
@@ -331,24 +333,24 @@ bool randEmergency() {
 void Plane::instructionEmergency(CCR &ccr) {
   vector<TWR *> vect = ccr.getList();
   vector<TWR *>::iterator it = vect.begin();
-  TWR tmpTWR = **it;
+  TWR *tmpTWR = *it;
   Point3D tmpPoint = (*it++)->getArrival();
   float dist = this->pos.distanceTo(tmpPoint);
 
   while (it != vect.end()) {
-    cout << tmpTWR;
     tmpPoint = (*it)->getArrival();
     if (dist > this->pos.distanceTo(tmpPoint)) {
       dist = this->pos.distanceTo(tmpPoint);
-      tmpTWR = **it;
+      tmpTWR = *it;
     }
     it++;
   }
-
-  this->traj.popList(3);
-  this->traj.setList(tmpTWR.getArrival());
-  this->traj.setList(tmpTWR.getPist());
-  this->traj.setList(tmpTWR.getParking());
+  this->twrDestination = tmpTWR;
+  this->traj.popList(4);
+  this->traj.setList(this->pos);
+  this->traj.setList(tmpTWR->getArrival());
+  this->traj.setList(tmpTWR->getPist());
+  this->traj.setList(tmpTWR->getParking());
 }
 
 void threadPlane(Plane &p, CCR &ccr) { p.navigate(ccr); }
