@@ -205,6 +205,7 @@ void Plane::navigate(CCR &ccr) {
           cout << traj << endl;
           instructionEmergency(ccr);
           cout << traj << endl;
+          t = this->traj.getList();
         }
       }
       this->speed = SPEED * nxt.getZ() / 200 + BASESPEED;
@@ -335,12 +336,12 @@ void Plane::instructionEmergency(CCR &ccr) {
   float dist = this->pos.distanceTo(tmpPoint);
 
   while (it != vect.end()) {
-    cout << "ok";
+    cout << tmpTWR;
     tmpPoint = (*it)->getArrival();
-    if (dist < this->pos.distanceTo(tmpPoint)) {
+    if (dist > this->pos.distanceTo(tmpPoint)) {
       dist = this->pos.distanceTo(tmpPoint);
+      tmpTWR = **it;
     }
-    tmpTWR = **it;
     it++;
   }
 
