@@ -9,44 +9,64 @@
 
 #include "../headers/Display.hpp"
 
-#define INTERVALLE 1
+// Number of planes in project (do not put more than 50, it's lagging -_- )
 #define NBPLANES 10
 
 using namespace std;
 using namespace sf;
 
-void display(CCR &ccr, vector<Plane> &planes);
+/*
+########################################################
+#                                                      #
+#                  AIRPORT SIMULATION                  #
+#       PROJECT BY TOM MULLIER AND MAXIME DECLEMY      #
+#                                                      #
+# Copyrighted, do not modify or distribute             #
+#                                                      #
+# Contact : tom.mullier@student.junia.com              #
+#           maxime.declemy@student.junia.com           #
+#                                                      #
+########################################################
+*/
+
+/*
+To modify :
+      Speed : Plane.cpp
+      Number of planes : main.cpp
+      Colors : CCR.cpp
+*/
 
 int main(int argc, char *argv[]) {
   srand(time(NULL));
-  // CCR
-  CCR France;
+  // Regional Center - Nord Pas de Calais
+  CCR NPdC;
 
-   // Image Plane
+  // Load Plane image to display
   Image image;
   Texture texturePlane;
   image.loadFromFile("../files/Plane.png");
   texturePlane.loadFromImage(image);
   texturePlane.setSmooth(false);
- 
 
-  // Plane
+  // Creation of NBPLANES planes
   vector<Plane> planes;
   for (int i = 0; i < NBPLANES; i++) {
-    Plane *p = new Plane(France, texturePlane);
-    p->setParameters(France);
+    Plane *p = new Plane(NPdC, texturePlane);
+    p->setParameters(NPdC);
     planes.push_back(*p);
   }
 
-  // Threads
+  // Threads to navigate planes
   vector<thread> T;
   for (int i = 0; i < NBPLANES; i++) {
-    thread *th = new thread(threadPlane, ref(planes[i]), ref(France));
+    thread *th = new thread(threadPlane, ref(planes[i]), ref(NPdC));
     T.push_back(move(*th));
   }
 
-  thread disp(display, ref(France), ref(planes));
+  // Thread sfor display
+  thread disp(display, ref(NPdC), ref(planes));
 
+  // Join threads
   vector<thread>::iterator itT = T.begin();
   while (itT != T.end()) {
     if (itT->joinable()) {

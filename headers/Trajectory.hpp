@@ -12,12 +12,14 @@ private:
 public:
   // Constructor
   Trajectory(Point3D pos = Point3D());
+
   // Setters & Getters
   vector<Point3D> getList() const { return listOfPoints; };
   Point3D &getPoint(const int &n) { return listOfPoints[n]; };
   int getNumberPoints() const { return numberOfPoints; };
   void setNumberOfPoints() { numberOfPoints = listOfPoints.size(); };
   void setList(Point3D &p);
+  
   // Operator
   friend ostream &operator<<(ostream &os, const Trajectory &T);
 };

@@ -1,4 +1,5 @@
 #include "./CCR.hpp"
+
 #include <cmath>
 #include <vector>
 
@@ -18,6 +19,7 @@ private:
 public:
   // Constructor
   Plane(CCR &ccr, sf::Texture &texture);
+
   // Setters & Getters
   string getName() const { return name; };
   Point3D getPos() const { return pos; };
@@ -30,11 +32,13 @@ public:
   void setParameters(CCR &ccr);
   void setTraj(vector<Point3D> &newTraj);
   void setSpeed(float &newSpeed) { speed = newSpeed; };
+
   // Other fonctions
   Point3D nextPos(int &count);
   void navigate(CCR &ccr);
   void rotate(int _i);
   void display(sf::RenderWindow &window);
+  
   // Operator
   friend ostream &operator<<(ostream &os, const Plane &p);
 };

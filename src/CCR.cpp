@@ -1,4 +1,5 @@
 #include "../headers/CCR.hpp"
+#include "../headers/json.hpp"
 
 #include <SFML/Graphics/RectangleShape.hpp>
 #include <SFML/Graphics/RenderWindow.hpp>
@@ -11,10 +12,10 @@
 
 #define SEPARATOR ','
 
-#include "../headers/json.hpp"
 using nlohmann::json;
 using namespace sf;
 
+// Colors (for presentation)
 #define PARK_COLOR Red
 #define DEP_COLOR Red
 #define ARR_COLOR Red
@@ -22,18 +23,20 @@ using namespace sf;
 
 /**
  * Constructor of CCR
- *
- * @return  CCR     CCR created and attributs set
  */
 CCR::CCR() {
+  // Read JSON file of TWR
   std::ifstream file("../files/ListTWR.json");
   json j;
   file >> j;
 
+  // Parse file
   if (file.is_open()) {
     for (auto it = j.begin(); it != j.end(); ++it) {
       json temp;
       temp = *it;
+
+      // Construct all TWR
       TWR *t = new TWR(temp["name"], temp["tag"],
                        Point3D(temp["parking"]["x"], temp["parking"]["y"], 0),
                        Point3D(temp["pist"]["x"], temp["pist"]["y"], 0),
@@ -46,36 +49,43 @@ CCR::CCR() {
     }
     file.close();
   } else {
+    // If errors
     cout << "File 'ListTWR.txt' doesn't exist..." << endl;
     cout << "Please create a file named 'ListTWR.txt' with this pattern"
          << endl;
   }
 }
 
+/**
+ * Destructor of CCR
+ */
 CCR::~CCR(){
   delete [] &ListOfTWR;
 }
+
 /**
- * Choose a TWR of Departure
+ * Choose a RANDOM TWR of Departure 
  *
  * @return  TWR     TWR of Departure for a plane
  */
 TWR *CCR::getDep() const {
   int idx;
   do {
+    // Random index for TWR
     idx = aleat(0, (ListOfTWR.size() - 1));
   } while (ListOfTWR[idx]->getLimit() == ListOfTWR[idx]->getNumberOfPlanes());
   return ListOfTWR[idx];
 }
 
 /**
- * Choose a TWR of Destionation different of Departure
+ * Choose a RANDOM TWR of Destionation different of TWR of Departure
  *
  * @return  TWR     TWR of Destination for a plane
  */
 TWR *CCR::getArr(TWR *&dep) const {
   int idx;
   do {
+    // Random index for TWR
     idx = aleat(0, (ListOfTWR.size() - 1));
   } while (ListOfTWR[idx] == dep);
   return ListOfTWR[idx];
@@ -91,6 +101,8 @@ void CCR::display(RenderWindow &window) {
   Vector2f rectSize(10,10);
   RectangleShape _shape(rectSize);
   _shape.setFillColor(Color::Red);
+
+  // Draw all TWR (Departure, Arrival, Pist and Parking)
   while (it != ListOfTWR.end()) {
     _shape.setPosition((*it)->getPist().getX(), (*it)->getPist().getY());
     _shape.setFillColor(Color::PIST_COLOR);
@@ -105,6 +117,8 @@ void CCR::display(RenderWindow &window) {
     _shape.setPosition((*it)->getArrival().getX(), (*it)->getArrival().getY());
     _shape.setFillColor(Color::ARR_COLOR);
     window.draw(_shape);
+    
+    // Show text for all TWR (Real Names)
     Text text;
     Font font;
     text.setString((*it)->getTag());

@@ -1,4 +1,5 @@
 #include "../headers/Display.hpp"
+
 #include <SFML/Graphics/CircleShape.hpp>
 #include <SFML/Graphics/Color.hpp>
 #include <SFML/Graphics/RenderWindow.hpp>
@@ -10,9 +11,17 @@
 
 using namespace std;
 using namespace sf;
-chrono::milliseconds INTERVAL2 = (chrono::milliseconds)17;
+chrono::milliseconds INTERVAL2 = (chrono::milliseconds)16;
 
+/**
+ * Display Planes in SFML Window
+ *
+ * @param   CCR  ccr  NPdC
+ * @param   vector  planes  Planes
+ *
+ */
 void display(CCR &ccr, vector<Plane> &planes) {
+  // Windows settings
   ContextSettings settings;
   settings.antialiasingLevel = 8;
   RenderWindow windowMap(VideoMode(1362, 840), "CCR map", Style::Default,
@@ -20,12 +29,13 @@ void display(CCR &ccr, vector<Plane> &planes) {
   windowMap.setPosition(Vector2i(0, 0));
   windowMap.setVerticalSyncEnabled(true);
   windowMap.setFramerateLimit(60);
-
   RenderWindow windowAirport(VideoMode(1920 - 1362, 1920 - 1362), "",
                              Style::Default, settings);
   windowAirport.setPosition(Vector2i(windowMap.getSize().x, 0));
   windowAirport.setVerticalSyncEnabled(true);
   windowAirport.setFramerateLimit(60);
+  
+  // Displaying and refreshing
   int count = 0;
 
   while (windowMap.isOpen() && windowAirport.isOpen()) {
@@ -66,7 +76,8 @@ void display(CCR &ccr, vector<Plane> &planes) {
         (float)windowMapSize.y / TextureMapSize.y; // Calculate scale.
     mapSprite.setScale(mapScaleX, mapScaleY);
     windowMap.draw(mapSprite);
-    // Circles
+
+    // Circles (decoration)
     int colorThick = 50;
     Color color(colorThick, colorThick, colorThick);
     for (int i = 1; i < 10; i++) {
@@ -108,6 +119,14 @@ void display(CCR &ccr, vector<Plane> &planes) {
   }
 }
 
+/**
+ * Change Map on the right with arrows
+ *
+ * @param   Texture  texture  Background
+ * @param   int  count  index of texture
+ * @param   RenderWindow  window  Window of maps
+ *
+ */
 Texture changeTexture(Texture &texture, int &count, RenderWindow &window) {
   switch (count) {
   case 1: {

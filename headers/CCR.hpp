@@ -11,12 +11,15 @@ public:
   // Constructor
   CCR();
   ~CCR();
+
   // Setters & Getters
   vector<TWR *> getList() { return ListOfTWR; };
   TWR *getDep() const;
   TWR *getArr(TWR *&dep) const;
+
   // Other functions
   void display(sf::RenderWindow &window);
+  
   // Operator
   friend ostream &operator<<(ostream &os, const CCR &T);
 };

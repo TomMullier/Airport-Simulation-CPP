@@ -18,6 +18,7 @@ public:
   TWR(string _name = "", string _tag = "", Point3D park = Point3D(),
       Point3D pi = Point3D(), Point3D dep = Point3D(), Point3D arr = Point3D(),
       int limit = 0);
+
   // Setters & Getters
   string getName() const { return name; };
   string getTag() const { return tag; };
@@ -30,6 +31,7 @@ public:
   int getNumberOfPlanes() const { return numberOfPlanes; };
   void setNumberOfPlanes(int x) { numberOfPlanes += x; };
   void setOccupied(bool newState) { occupied = newState; };
+  
   // Operator
   bool operator==(const TWR &twr);
   friend ostream &operator<<(ostream &os, const TWR &T);
