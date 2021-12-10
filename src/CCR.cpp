@@ -52,7 +52,9 @@ CCR::CCR() {
   }
 }
 
-CCR::~CCR() { delete[] & ListOfTWR; }
+CCR::~CCR(){
+  delete [] &ListOfTWR;
+}
 /**
  * Choose a TWR of Departure
  *
@@ -86,8 +88,9 @@ TWR *CCR::getArr(TWR *&dep) const {
  */
 void CCR::display(RenderWindow &window) {
   vector<TWR *>::iterator it = ListOfTWR.begin();
-  Vector2f rectSize(10, 10);
+  Vector2f rectSize(10,10);
   RectangleShape _shape(rectSize);
+  _shape.setFillColor(Color::Red);
   while (it != ListOfTWR.end()) {
     _shape.setPosition((*it)->getPist().getX(), (*it)->getPist().getY());
     _shape.setFillColor(Color::PIST_COLOR);

@@ -17,8 +17,7 @@ public:
   Point3D &getPoint(const int &n) { return listOfPoints[n]; };
   int getNumberPoints() const { return numberOfPoints; };
   void setNumberOfPoints() { numberOfPoints = listOfPoints.size(); };
-  void setList(Point3D const &p);
-  void popList(int nbPoints);
+  void setList(Point3D &p);
   // Operator
   friend ostream &operator<<(ostream &os, const Trajectory &T);
 };

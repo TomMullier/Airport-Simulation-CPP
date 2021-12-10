@@ -14,7 +14,6 @@ private:
   float speed;
   Sprite shape;
   float rot;
-  bool emergency;
 
 public:
   // Constructor
@@ -36,10 +35,8 @@ public:
   void navigate(CCR &ccr);
   void rotate(int _i);
   void display(sf::RenderWindow &window);
-  void instructionEmergency(CCR &ccr);
   // Operator
   friend ostream &operator<<(ostream &os, const Plane &p);
 };
 
-bool randEmergency();
 void threadPlane(Plane &p, CCR &ccr);

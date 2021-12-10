@@ -12,7 +12,6 @@ private:
   int limit;
   int numberOfPlanes;
   bool occupied;
-  bool emergency;
 
 public:
   // Constructor
@@ -31,8 +30,6 @@ public:
   int getNumberOfPlanes() const { return numberOfPlanes; };
   void setNumberOfPlanes(int x) { numberOfPlanes += x; };
   void setOccupied(bool newState) { occupied = newState; };
-  void setEmergency(bool const &state){emergency=state;};
-  bool getEmergency(){return emergency;};
   // Operator
   bool operator==(const TWR &twr);
   friend ostream &operator<<(ostream &os, const TWR &T);
