@@ -20,7 +20,6 @@ using namespace sf;
 #define ARR_COLOR Red
 #define PIST_COLOR Red
 
-
 /**
  * Constructor of CCR
  *
